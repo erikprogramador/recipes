@@ -14,8 +14,14 @@ class ReadRecipesTest extends TestCase
     function lists_all_recipes_on_home()
     {
         $recipe = factory(Recipe::class)->create();
-        $response = $this->get('/');
+        $this->get('/')
+             ->assertSee($recipe->title);
+    }
 
-        $response->assertSee($recipe->title);
+    /** @test */
+    function if_dont_have_any_recipies_show_a_cool_message()
+    {
+        $this->get('/')
+             ->assertSee('Be the first to write a recipe!');
     }
 }
