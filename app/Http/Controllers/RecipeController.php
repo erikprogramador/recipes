@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class RecipeController extends Controller
 {
+    protected $recipe;
+
+    public function __construct(Recipe $recipe)
+    {
+        $this->middleware('auth')->only(['create', 'store']);
+        $this->recipe = $recipe;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +32,7 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        //
+        return view('recipies.create');
     }
 
     /**
@@ -35,7 +43,15 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'cover' => 'required'
+        ]);
+        $recipe = $this->recipe->fill($request->only(['title', 'description', 'cover']));
+        $recipe = auth()->user()->recipies()->save($recipe);
+
+        return redirect('/recipe/'.$recipe->id);
     }
 
     /**
