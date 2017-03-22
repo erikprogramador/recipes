@@ -46,7 +46,7 @@ class RecipeController extends Controller
      */
     public function show(Recipe $recipe)
     {
-        //
+        return view('recipies.show', compact('recipe'));
     }
 
     /**

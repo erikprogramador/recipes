@@ -24,4 +24,14 @@ class ReadRecipesTest extends TestCase
         $this->get('/')
              ->assertSee('Be the first to write a recipe!');
     }
+
+    /** @test */
+    function can_view_a_recipe()
+    {
+        $recipe = factory(Recipe::class)->create();
+
+        $this->get('/recipe/'.$recipe->id)
+             ->assertSee($recipe->title)
+             ->assertSee($recipe->description);
+    }
 }
