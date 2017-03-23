@@ -10,6 +10,9 @@
         <textarea name="description" id="description" rows="10">Description</textarea>
 
         <input type="file" name="cover" id="cover">
+        <label>
+            <input type="checkbox" name="featured"> Featured
+        </label>
 
         <button type="submit">Save</button>
     </form>

@@ -48,7 +48,7 @@ class RecipeController extends Controller
             'description' => 'required',
             'cover' => 'required'
         ]);
-        $recipe = $this->recipe->fill($request->only(['title', 'description', 'cover']));
+        $recipe = $this->recipe->fill($request->only(['title', 'description', 'cover', 'featured']));
         $recipe = auth()->user()->recipies()->save($recipe);
 
         return redirect('/recipe/'.$recipe->id);

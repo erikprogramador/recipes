@@ -66,4 +66,30 @@ class CreateRecipiesTest extends TestCase
         $this->post('/recipe/store', $recipe->toArray())
              ->assertSessionHasErrors(['cover']);
     }
+
+    /** @test */
+    function a_recipe_can_be_featured()
+    {
+        $recipe = factory(Recipe::class)->make(['featured' => true]);
+
+        $this->be(factory(User::class)->create());
+        $this->post('/recipe/store', $recipe->toArray());
+
+        $fistRecipe = Recipe::first();
+
+        $this->assertTrue($fistRecipe->isFeatured());
+    }
+
+    /** @test */
+    function a_recipe_without_have_be_featured_can_not_be_featured()
+    {
+        $recipe = factory(Recipe::class)->make(['featured' => false]);
+
+        $this->be(factory(User::class)->create());
+        $this->post('/recipe/store', $recipe->toArray());
+
+        $fistRecipe = Recipe::first();
+
+        $this->assertFalse($fistRecipe->isFeatured());
+    }
 }
