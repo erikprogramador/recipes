@@ -24,16 +24,16 @@ class CreateRecipiesTest extends TestCase
     /** @test */
     function only_logged_users_can_store_a_recipe()
     {
-        $recipe = factory(Recipe::class)->raw();
+        $recipe = factory(Recipe::class)->make();
 
-        $this->post('/recipe/store', $recipe)
+        $this->post('/recipe/store', $recipe->toArray())
              ->assertRedirect('/login');
 
         $this->be(factory(User::class)->create());
-        $this->post('/recipe/store', $recipe);
+        $this->post('/recipe/store', $recipe->toArray());
 
         $this->get('/recipe/1')
-             ->assertSee($recipe['title'])
-             ->assertSee($recipe['description']);
+             ->assertSee($recipe->title)
+             ->assertSee($recipe->description);
     }
 }
