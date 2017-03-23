@@ -11,6 +11,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
@@ -22,6 +23,7 @@
 </head>
 <body>
     <div id="app">
+        @include('layouts.includes.navbar')
         @yield('content')
     </div>
 

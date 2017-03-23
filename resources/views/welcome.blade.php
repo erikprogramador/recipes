@@ -1,13 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Welcome to recipes</h1>
-    <ul>
+    <div class="container">
+        <h1>Welcome to recipes</h1>
+
         @if ($recipes->count() <= 0)
-            <h2>Be the first to write a recipe!</h2>
+            <div class="card-panel red lighten-2">
+                <h5 class="white-text">Be the first to write a recipe!</h5>
+            </div>
+        @else
+            @foreach ($recipes as $recipe)
+                @include('recipies.includes.list')
+            @endforeach
         @endif
-        @foreach ($recipes as $recipe)
-            <li>{{ $recipe->title }}</li>
-        @endforeach
-    </ul>
+    </div>
 @endsection

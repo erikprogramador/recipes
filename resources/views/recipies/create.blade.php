@@ -1,19 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Create a recipe</h1>
-    <form action="/recipe/store">
-        {{ csrf_field() }}
-        <label for="title">Title:</label>
-        <input type="text" name="title" id="title" placeholder="Title">
-        <label for="title">Title:</label>
-        <textarea name="description" id="description" rows="10">Description</textarea>
+    <div class="container">
+        <div class="row">
+            <div class="col m6 offset-m3 s12">
+                <h1>Create a recipe</h1>
+                <form action="/recipe/store" method="POST">
+                    {{ csrf_field() }}
+                    <div class="input-field">
+                        <label for="title">Title:</label>
+                        <input type="text" name="title" id="title" placeholder="Title">
+                    </div>
+                    <div class="input-field">
+                        <label for="description">Description:</label>
+                        <textarea name="description" id="description" class="materialize-textarea" rows="10" placeholder="Description"></textarea>
+                    </div>
 
-        <input type="file" name="cover" id="cover">
-        <label>
-            <input type="checkbox" name="featured"> Featured
-        </label>
+                    <div>
+                        <input type="checkbox" id="featured">
+                        <label for="featured">Featured</label>
+                    </div>
 
-        <button type="submit">Save</button>
-    </form>
+                    <div class="file-container">
+                        <label for="cover" class="waves-effect waves-light btn red">
+                            Select a cover
+                        </label>
+                        <input type="file" name="cover" id="cover" class="file-input">
+                    </div>
+
+                    <div class="center">
+                        <button class="btn-floating btn-large waves-effect waves-light red" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection

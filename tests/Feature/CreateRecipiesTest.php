@@ -13,11 +13,11 @@ class CreateRecipiesTest extends TestCase
     /** @test */
     function just_logged_users_can_see_the_create_recipes_page()
     {
-        $this->get('/recipies/create')
+        $this->get('/recipe/create')
              ->assertRedirect('/login');
 
         $this->be(factory(User::class)->create());
-        $this->get('/recipies/create')
+        $this->get('/recipe/create')
              ->assertSee('Create a recipe');
     }
 

@@ -1,1 +1,11 @@
+@import "color";
+@import "variables";
+@import "../../../node_modules/materialize-css/sass/materialize";
 
+.file-container {
+    margin: 2em 0;
+}
+
+.file-input {
+    opacity: 0;
+}
