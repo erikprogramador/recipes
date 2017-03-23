@@ -3,6 +3,7 @@
 @section('content')
     <h1>Create a recipe</h1>
     <form action="/recipe/store">
+        {{ csrf_field() }}
         <label for="title">Title:</label>
         <input type="text" name="title" id="title" placeholder="Title">
         <label for="title">Title:</label>

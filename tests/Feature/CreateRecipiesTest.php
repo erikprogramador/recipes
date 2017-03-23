@@ -36,4 +36,34 @@ class CreateRecipiesTest extends TestCase
              ->assertSee($recipe->title)
              ->assertSee($recipe->description);
     }
+
+    /** @test */
+    function title_field_is_required()
+    {
+        $recipe = factory(Recipe::class)->make(['title' => null]);
+
+        $this->be(factory(User::class)->create());
+        $this->post('/recipe/store', $recipe->toArray())
+             ->assertSessionHasErrors(['title']);
+    }
+
+    /** @test */
+    function description_field_is_required()
+    {
+        $recipe = factory(Recipe::class)->make(['description' => null]);
+
+        $this->be(factory(User::class)->create());
+        $this->post('/recipe/store', $recipe->toArray())
+             ->assertSessionHasErrors(['description']);
+    }
+
+    /** @test */
+    function cover_field_is_required()
+    {
+        $recipe = factory(Recipe::class)->make(['cover' => null]);
+
+        $this->be(factory(User::class)->create());
+        $this->post('/recipe/store', $recipe->toArray())
+             ->assertSessionHasErrors(['cover']);
+    }
 }
