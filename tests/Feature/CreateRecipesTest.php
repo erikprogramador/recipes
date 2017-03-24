@@ -6,7 +6,7 @@ use App\{User, Recipe};
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class CreateRecipiesTest extends TestCase
+class CreateRecipesTest extends TestCase
 {
     use DatabaseMigrations;
 

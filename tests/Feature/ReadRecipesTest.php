@@ -19,7 +19,7 @@ class ReadRecipesTest extends TestCase
     }
 
     /** @test */
-    function if_dont_have_any_recipies_show_a_cool_message()
+    function if_dont_have_any_recipes_show_a_cool_message()
     {
         $this->get('/')
              ->assertSee('Be the first to write a recipe!');
