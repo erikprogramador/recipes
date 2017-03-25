@@ -11,7 +11,8 @@ class RecipeController extends Controller
 
     public function __construct(Recipe $recipe)
     {
-        $this->middleware('auth')->only(['create', 'store']);
+        $this->middleware('auth')->except(['show']);
+        $this->middleware('owner')->only(['edit', 'update']);
         $this->recipe = $recipe;
     }
 
@@ -32,7 +33,7 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        return view('recipies.create');
+        return view('recipes.create');
     }
 
     /**
@@ -49,7 +50,7 @@ class RecipeController extends Controller
             'cover' => 'required'
         ]);
         $recipe = $this->recipe->fill($request->only(['title', 'description', 'cover', 'featured']));
-        $recipe = auth()->user()->recipies()->save($recipe);
+        $recipe = auth()->user()->recipes()->save($recipe);
 
         return redirect('/recipe/'.$recipe->id);
     }
@@ -62,7 +63,7 @@ class RecipeController extends Controller
      */
     public function show(Recipe $recipe)
     {
-        return view('recipies.show', compact('recipe'));
+        return view('recipes.show', compact('recipe'));
     }
 
     /**
@@ -73,7 +74,7 @@ class RecipeController extends Controller
      */
     public function edit(Recipe $recipe)
     {
-        //
+        return view('recipes.edit', compact('recipe'));
     }
 
     /**
@@ -85,7 +86,9 @@ class RecipeController extends Controller
      */
     public function update(Request $request, Recipe $recipe)
     {
-        //
+        $recipe->update($request->only(['title', 'description', 'cover', 'featured']));
+
+        return redirect('/recipe/' . $recipe->id)->with(['message' => 'Recipe successfully updated!', 'recipe' => $recipe]);
     }
 
     /**

@@ -12,15 +12,15 @@ class UserTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    function it_has_many_recipies()
+    function it_has_many_recipes()
     {
         $user = factory(User::class)->create();
         $recipe = factory(Recipe::class)->make();
-        $user->recipies()->save($recipe);
+        $user->recipes()->save($recipe);
 
-        $this->assertEquals($recipe->title, $user->recipies->first()->title);
+        $this->assertEquals($recipe->title, $user->recipes->first()->title);
         $this->assertInstanceOf(
-            '\Illuminate\Database\Eloquent\Collection', $user->recipies
+            '\Illuminate\Database\Eloquent\Collection', $user->recipes
         );
     }
 }

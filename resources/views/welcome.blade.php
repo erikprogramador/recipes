@@ -10,7 +10,7 @@
             </div>
         @else
             @foreach ($recipes as $recipe)
-                @include('recipies.includes.list')
+                @include('recipes.includes.list')
             @endforeach
         @endif
     </div>
