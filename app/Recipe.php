@@ -23,6 +23,11 @@ class Recipe extends Model
         return $this->featured;
     }
 
+    public function checked() : ?string
+    {
+        return $this->featured ? 'checked' : null;
+    }
+
     protected function toggleFeatured(bool $state) : self
     {
         $this->featured = $state;

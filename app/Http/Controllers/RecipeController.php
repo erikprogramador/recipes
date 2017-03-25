@@ -49,8 +49,9 @@ class RecipeController extends Controller
             'description' => 'required',
             'cover' => 'required'
         ]);
-        $recipe = $this->recipe->fill($request->only(['title', 'description', 'cover', 'featured']));
+        $recipe = $this->recipe->fill($request->only(['title', 'description', 'cover']));
         $recipe = auth()->user()->recipes()->save($recipe);
+        $feature = $request->featured ? $recipe->feature() : $recipe->unfeature();
 
         return redirect('/recipe/'.$recipe->id);
     }
@@ -91,7 +92,8 @@ class RecipeController extends Controller
             'description' => 'required',
             'cover' => 'required'
         ]);
-        $recipe->update($request->only(['title', 'description', 'cover', 'featured']));
+        $recipe->update($request->only(['title', 'description', 'cover']));
+        $feature = $request->featured ? $recipe->feature() : $recipe->unfeature();
 
         return redirect('/recipe/' . $recipe->id)->with(['message' => 'Recipe successfully updated!', 'recipe' => $recipe]);
     }

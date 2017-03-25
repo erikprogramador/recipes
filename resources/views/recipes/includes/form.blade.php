@@ -9,15 +9,15 @@
 </div>
 
 <div>
-    <input type="checkbox" id="featured" checked="{{ isset($recipe) ? $recipe->isFeatured() : false }}">
+    <input type="checkbox" name="featured" id="featured" {{ isset($recipe) ? $recipe->checked() : null }}>
     <label for="featured">Featured</label>
 </div>
 
 <div class="file-container">
     <label for="cover" class="waves-effect waves-light btn red">
-        Select a cover
+        Select a cover {{ $recipe->cover ?? null }}
     </label>
-    <input type="file" name="cover" id="cover" class="file-input">
+    <input type="file" name="cover" id="cover" class="file-input" value="{{ $recipe->cover ?? null }}">
 </div>
 
 <div class="center">

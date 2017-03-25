@@ -27,4 +27,12 @@ class RecipeTest extends TestCase
 
         $this->assertFalse($recipe->isFeatured());
     }
+
+    /** @test */
+    function if_is_or_not_checked()
+    {
+        $recipe = factory(Recipe::class)->create(['featured' => true]);
+
+        $this->assertEquals('checked', $recipe->checked());
+    }
 }
