@@ -71,4 +71,37 @@ class UpdateRecipesTest extends TestCase
         $this->post("/recipe/{$oldRecipe->id}/update", $newRecipe->toArray())
              ->assertRedirect('/recipe/' . $oldRecipe->id);
     }
+
+     /** @test */
+    function title_field_is_required()
+    {
+        $this->be($user = factory(User::class)->create());
+        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $newRecipe = factory(Recipe::class)->make(['title' => null, 'user_id' => $user->id]);
+
+        $this->post("/recipe/{$recipe->id}/update", $newRecipe->toArray())
+             ->assertSessionHasErrors(['title']);
+    }
+
+    /** @test */
+    function description_field_is_required()
+    {
+        $this->be($user = factory(User::class)->create());
+        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $newRecipe = factory(Recipe::class)->make(['description' => null, 'user_id' => $user->id]);
+
+        $this->post("/recipe/{$recipe->id}/update", $newRecipe->toArray())
+             ->assertSessionHasErrors(['description']);
+    }
+
+    /** @test */
+    function cover_field_is_required()
+    {
+        $this->be($user = factory(User::class)->create());
+        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $newRecipe = factory(Recipe::class)->make(['cover' => null, 'user_id' => $user->id]);
+
+        $this->post("/recipe/{$recipe->id}/update", $newRecipe->toArray())
+             ->assertSessionHasErrors(['cover']);
+    }
 }

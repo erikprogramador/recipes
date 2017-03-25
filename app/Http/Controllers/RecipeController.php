@@ -86,6 +86,11 @@ class RecipeController extends Controller
      */
     public function update(Request $request, Recipe $recipe)
     {
+        $this->validate($request, [
+            'title' => 'required:max:100',
+            'description' => 'required',
+            'cover' => 'required'
+        ]);
         $recipe->update($request->only(['title', 'description', 'cover', 'featured']));
 
         return redirect('/recipe/' . $recipe->id)->with(['message' => 'Recipe successfully updated!', 'recipe' => $recipe]);
