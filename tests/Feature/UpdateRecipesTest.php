@@ -11,6 +11,17 @@ class UpdateRecipesTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
+    function the_owner_can_see_update_button_on_the_show_page_of_recipes()
+    {
+        $user = factory(User::class)->create();
+        $accessRecipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+
+        $this->be($user);
+        $this->get("/recipe/{$accessRecipe->id}")
+            ->assertSee('Edit');
+    }
+
+    /** @test */
     function only_owner_user_can_update_the_recipe()
     {
         $user = factory(User::class)->create();

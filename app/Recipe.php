@@ -8,6 +8,22 @@ class Recipe extends Model
 {
     protected $guarded = [];
 
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function isOwner(User $user = null) : bool
+    {
+        if (!$user && !auth()->user()) {
+            return false;
+        }
+
+        $user = $user ?? auth()->user();
+
+        return $this->isOwnerByUserId($user);
+    }
+
     public function feature() : self
     {
         return $this->toggleFeatured(true);
@@ -33,5 +49,10 @@ class Recipe extends Model
         $this->featured = $state;
         $this->save();
         return $this;
+    }
+
+    protected function isOwnerByUserId(User $user) : bool
+    {
+        return $user->id === $this->owner->id;
     }
 }
