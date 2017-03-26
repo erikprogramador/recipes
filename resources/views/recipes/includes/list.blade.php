@@ -9,6 +9,12 @@
         </div>
         <div class="card-action">
             <a href="/recipe/{{ $recipe->id }}">Read recipe...</a>
+            @if ($recipe->isOwner())
+                <a href="/recipe/{{ $recipe->id }}/update">Edit</a>
+                <form action="/recipe/{{ $recipe->id }}/delete" method="POST">
+                    <button type="submit">Delete</button>
+                </form>
+            @endif
         </div>
     </div>
 </div>

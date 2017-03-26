@@ -10,3 +10,4 @@ Route::post('recipe/store', 'RecipeController@store');
 Route::get('recipe/{recipe}', 'RecipeController@show');
 Route::get('recipe/{recipe}/update', 'RecipeController@edit');
 Route::post('recipe/{recipe}/update', 'RecipeController@update');
+Route::post('recipe/{recipe}/delete', 'RecipeController@destroy');

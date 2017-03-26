@@ -12,7 +12,7 @@ class RecipeController extends Controller
     public function __construct(Recipe $recipe)
     {
         $this->middleware('auth')->except(['show']);
-        $this->middleware('owner')->only(['edit', 'update']);
+        $this->middleware('owner')->only(['edit', 'update', 'destroy']);
         $this->recipe = $recipe;
     }
 
@@ -106,6 +106,7 @@ class RecipeController extends Controller
      */
     public function destroy(Recipe $recipe)
     {
-        //
+        $recipe->delete();
+        return redirect('/')->with('message', 'The recipe is deleted with success!');
     }
 }
