@@ -23,3 +23,12 @@ $factory->define(App\Recipe::class, function (Faker\Generator $faker) {
         'featured' => $faker->boolean
     ];
 });
+
+$factory->define(App\Category::class, function (Faker\Generator $faker) {
+    $title = $faker->title;
+    $slug = str_replace(' ', '-', strtolower($title));
+    return [
+        'title' => $title,
+        'slug' => $slug
+    ];
+});

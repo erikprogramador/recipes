@@ -5,10 +5,13 @@
 - [x] ~~Create a **Recipe**~~
 - [x] ~~Update a **Recipe**~~
 - [x] ~~Delete a **Recipe**~~
-- [ ] Create **Categories**
-- [ ] Delete **Categories**
-- [ ] Update **Category**
+- [x] ~~Feature a **Recipe**~~
+- [x] ~~Create **Categories**~~
 - [ ] Associate a **Recipe** with multiple **Categories**
-- [ ] Feature a **Recipe**
 - [ ] Filter by **Category**
 - [ ] Print a **Recipe**
+
+## Ignore
+
+- [x] ~~Delete **Categories**~~
+- [x] ~~Update **Category**~~
