@@ -87,8 +87,7 @@ class UpdateRecipesTest extends TestCase
 
         $recipe = Recipe::find($oldRecipe->id);
 
-        $this->assertNotEquals($newRecipe->title, $recipe->title);
-        $this->assertNotEquals($newRecipe->description, $recipe->description);
+        $this->assertNotEquals($newRecipe->toArray(), $recipe->toArray());
     }
 
     /** @test */
