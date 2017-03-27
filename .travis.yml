@@ -3,4 +3,7 @@ php:
   - '7.1'
   - hhvm
 
-install: composer install
+install:
+  - composer install
+  - cp .env.example .env
+  - php artisan key:generate
