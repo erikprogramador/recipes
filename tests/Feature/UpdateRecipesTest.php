@@ -149,6 +149,21 @@ class UpdateRecipesTest extends TestCase
              ->assertSessionHasErrors(['category_id']);
     }
 
+    /** @test */
+    function a_recipe_can_recive_categories_update()
+    {
+        $this->be($user = factory(User::class)->create());
+        $recipe = $this->createRecipe(['user_id' => $user->id], factory(Category::class, 3)->create());
+        $newRecipe = $this->makeRecipe(['user_id' => $user->id], factory(Category::class, 3)->create());
+
+        $this->post("/recipe/{$recipe->id}/update", $newRecipe)
+             ->assertRedirect("/recipe/{$recipe->id}");
+
+        $recipe->fresh();
+
+        $this->assertEquals($recipe->categories->pluck('id'), $newRecipe['category_id']);
+    }
+
     protected function makeRecipe($overrides = [], $categories)
     {
         $recipe = factory(Recipe::class)->make($overrides);
@@ -162,5 +177,13 @@ class UpdateRecipesTest extends TestCase
         ];
 
         return $post;
+    }
+
+    protected function createRecipe($overrides = [], $categories)
+    {
+        $recipe = factory(Recipe::class)->create($overrides);
+        $recipe->categories()->attach($categories);
+
+        return $recipe;
     }
 }

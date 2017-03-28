@@ -94,6 +94,7 @@ class RecipeController extends Controller
             'category_id' => 'required'
         ]);
         $recipe->update($request->only(['title', 'description', 'cover']));
+        $recipe->categories()->sync($request->category_id);
         $feature = $request->featured ? $recipe->feature() : $recipe->unfeature();
 
         return redirect('/recipe/' . $recipe->id)->with(['message' => 'Recipe successfully updated!', 'recipe' => $recipe]);

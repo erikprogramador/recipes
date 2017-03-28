@@ -10,6 +10,8 @@
 - [x] ~~Associate a **Recipe** with multiple **Categories**~~
 - [ ] Filter by **Category**
 - [ ] Print a **Recipe**
+- [ ] Include **Ingredients** to a **Recipe**
+- [ ] Include **Prepare Mode** to a **Recipe**
 
 ## Ignore
 
