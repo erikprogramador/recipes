@@ -49,6 +49,15 @@ class Recipe extends Model
         return $this->featured ? 'checked' : null;
     }
 
+    public function createWithCategories(array $data, $categories)
+    {
+        $this->fill($data);
+        $recipe = auth()->user()->recipes()->save($this);
+        $this->categories()
+               ->attach($categories);
+        return $this;
+    }
+
     protected function toggleFeatured(bool $state) : self
     {
         $this->featured = $state;

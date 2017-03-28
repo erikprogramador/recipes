@@ -88,4 +88,22 @@ class RecipeTest extends TestCase
         $this->be(factory(User::class)->create());
         $this->assertFalse($recipe->isOwner());
     }
+
+    /** @test */
+    function it_can_create_a_recipe_with_a_user_and_many_categories()
+    {
+        $this->be(factory(User::class)->create());
+        $recipe = factory(Recipe::class)->make();
+        $categories = factory(Category::class, 3)->create();
+
+        $createRecipe = new Recipe;
+
+        $createRecipe->createWithCategories($recipe->toArray(), $categories);
+
+        $newCategories = $createRecipe->categories;
+
+        for ($i = 0; $i < 3; $i++) {
+            $this->assertEquals($newCategories[$i]->title, $categories[$i]->title);
+        }
+    }
 }

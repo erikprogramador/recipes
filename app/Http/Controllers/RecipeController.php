@@ -49,9 +49,7 @@ class RecipeController extends Controller
             'description' => 'required',
             'cover' => 'required'
         ]);
-        $recipe = $this->recipe->fill($request->only(['title', 'description', 'cover']));
-        $recipe = auth()->user()->recipes()->save($recipe);
-        $recipe->categories()->attach($request->category_id);
+        $recipe = $this->recipe->createWithCategories($request->only(['title', 'description', 'cover']), $request->category_id);
         $feature = $request->featured ? $recipe->feature() : $recipe->unfeature();
 
         return redirect('/recipe/'.$recipe->id);

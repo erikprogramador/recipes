@@ -28,69 +28,69 @@ class CreateRecipesTest extends TestCase
     /** @test */
     function only_logged_users_can_store_a_recipe()
     {
-        $recipe = factory(Recipe::class)->make();
+        $recipe = $this->makeRecipe([], factory(Category::class, 3)->create());
 
-        $this->post('/recipe/store', $recipe->toArray())
+        $this->post('/recipe/store', $recipe)
              ->assertRedirect('/login');
 
         $this->be(factory(User::class)->create());
-        $this->post('/recipe/store', $recipe->toArray());
+        $this->post('/recipe/store', $recipe);
 
         $this->get('/recipe/1')
-             ->assertSee($recipe->title)
-             ->assertSee($recipe->description);
+             ->assertSee($recipe['title'])
+             ->assertSee($recipe['description']);
     }
 
     /** @test */
     function title_field_is_required()
     {
-        $recipe = factory(Recipe::class)->make(['title' => null]);
+        $recipe = $this->makeRecipe(['title' => null], factory(Category::class, 3)->create());
 
         $this->be(factory(User::class)->create());
-        $this->post('/recipe/store', $recipe->toArray())
+        $this->post('/recipe/store', $recipe)
              ->assertSessionHasErrors(['title']);
     }
 
     /** @test */
     function description_field_is_required()
     {
-        $recipe = factory(Recipe::class)->make(['description' => null]);
+        $recipe = $this->makeRecipe(['description' => null], factory(Category::class, 3)->create());
 
         $this->be(factory(User::class)->create());
-        $this->post('/recipe/store', $recipe->toArray())
+        $this->post('/recipe/store', $recipe)
              ->assertSessionHasErrors(['description']);
     }
 
     /** @test */
     function cover_field_is_required()
     {
-        $recipe = factory(Recipe::class)->make(['cover' => null]);
+        $recipe = $this->makeRecipe(['cover' => null], factory(Category::class, 3)->create());
 
         $this->be(factory(User::class)->create());
-        $this->post('/recipe/store', $recipe->toArray())
+        $this->post('/recipe/store', $recipe)
              ->assertSessionHasErrors(['cover']);
     }
 
     /** @test */
     function a_recipe_can_be_featured()
     {
-        $recipe = factory(Recipe::class)->make(['featured' => true]);
+        $recipe = $this->makeRecipe(['featured' => true], factory(Category::class, 3)->create());
 
         $this->be(factory(User::class)->create());
-        $this->post('/recipe/store', $recipe->toArray());
+        $this->post('/recipe/store', $recipe);
 
-        $fistRecipe = Recipe::first();
+        $first = Recipe::first();
 
-        $this->assertTrue($fistRecipe->isFeatured());
+        $this->assertTrue($first->isFeatured());
     }
 
     /** @test */
     function a_recipe_without_have_be_featured_can_not_be_featured()
     {
-        $recipe = factory(Recipe::class)->make(['featured' => false]);
+        $recipe = $this->makeRecipe(['featured' => false], factory(Category::class, 3)->create());
 
         $this->be(factory(User::class)->create());
-        $this->post('/recipe/store', $recipe->toArray());
+        $this->post('/recipe/store', $recipe);
 
         $fistRecipe = Recipe::first();
 
@@ -100,18 +100,11 @@ class CreateRecipesTest extends TestCase
     /** @test */
     function a_recipe_can_have_many_categories()
     {
-        $recipe = factory(Recipe::class)->make();
         $categories = factory(Category::class, 3)->create();
-
-        $post = [
-            'title' => $recipe->title,
-            'description' => $recipe->description,
-            'cover' => $recipe->cover,
-            'category_id' => $categories->pluck('id')
-        ];
+        $recipe = $this->makeRecipe([], $categories);
 
         $this->be(factory(User::class)->create());
-        $this->post('/recipe/store', $post)
+        $this->post('/recipe/store', $recipe)
              ->assertRedirect('/recipe/1');
 
         $find = Recipe::find(1);
@@ -121,5 +114,20 @@ class CreateRecipesTest extends TestCase
         for ($i = 0; $i < 3; $i++) {
             $this->assertEquals($newCategories[$i]->title, $categories[$i]->title);
         }
+    }
+
+    protected function makeRecipe($overrides = [], $categories)
+    {
+        $recipe = factory(Recipe::class)->make($overrides);
+
+        $post = [
+            'title' => $recipe->title,
+            'description' => $recipe->description,
+            'cover' => $recipe->cover,
+            'featured' => $recipe->featured,
+            'category_id' => $categories->pluck('id')
+        ];
+
+        return $post;
     }
 }
