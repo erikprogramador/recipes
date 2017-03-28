@@ -13,6 +13,17 @@
     <label for="featured">Featured</label>
 </div>
 
+<div class="input-field col s12">
+    <select name="category_id" id="category_id" multiple required>
+        <option value="" disabled selected>Choose categories</option>
+        {{-- TODO: Move this to the view --}}
+        @foreach (\App\Category::all() as $category)
+            <option value="{{ $category->id }}">{{ $category->title }}</option>
+        @endforeach
+    </select>
+    <label for="category_id">Select categories</label>
+</div>
+
 <div class="file-container">
     <label for="cover" class="waves-effect waves-light btn red">
         Select a cover {{ $recipe->cover ?? null }}
