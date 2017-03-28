@@ -17,7 +17,12 @@ class FilterRecipesByCategoryTest extends TestCase
         $recipe = factory(Recipe::class)->create();
         $recipe->categories()->attach($categories);
         $noShow = factory(Recipe::class)->create();
-        $noShow->categories()->attach(factory(Category::class)->create());
+        $noCategory = factory(Category::class)->create();
+        $noShow->categories()->attach($noCategory);
+        if ($noShow->title === $recipe->title || $noCategory->slug === $categories->slug) {
+            $noShow = factory(Recipe::class)->create();
+            $noShow->categories()->attach(factory(Category::class)->create());
+        }
 
         $this->get('/'. $categories->slug)
              ->assertSee($recipe->title)
