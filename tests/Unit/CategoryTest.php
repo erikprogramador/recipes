@@ -22,4 +22,12 @@ class CategoryTest extends TestCase
         $this->assertEquals($title, $category->title);
         $this->assertEquals($slug, $category->slug);
     }
+
+    /** @test */
+    function it_should_have_get_route_key_name_returning_the_slug_as_the_route_key()
+    {
+        $category = new Category;
+
+        $this->assertEquals('slug', $category->getRouteKeyName());
+    }
 }

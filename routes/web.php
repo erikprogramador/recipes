@@ -19,5 +19,6 @@ Route::post('recipe/{recipe}/delete', 'RecipeController@destroy');
 /*
  * Categories
  */
+Route::get('{category}', 'CategoryController@show');
 Route::get('category/create', 'CategoryController@create');
 Route::post('category/store', 'CategoryController@store');

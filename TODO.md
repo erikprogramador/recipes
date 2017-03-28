@@ -8,10 +8,10 @@
 - [x] ~~Feature a **Recipe**~~
 - [x] ~~Create **Categories**~~
 - [x] ~~Associate a **Recipe** with multiple **Categories**~~
-- [ ] Filter by **Category**
-- [ ] Print a **Recipe**
+- [x] ~~Filter by **Category**~~
 - [ ] Include **Ingredients** to a **Recipe**
 - [ ] Include **Prepare Mode** to a **Recipe**
+- [ ] Print a **Recipe**
 
 ## Ignore
 

@@ -16,4 +16,9 @@ class Category extends Model
             'slug' => $slug
         ]);
     }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

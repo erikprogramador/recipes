@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
+use App\{Recipe, Category};
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     protected $category;
+    protected $recipe;
 
-    public function __construct(Category $category)
+    public function __construct(Category $category, Recipe $recipe)
     {
         $this->middleware('auth')->only(['create', 'store']);
         $this->category = $category;
+        $this->recipe = $recipe;
     }
 
     /**
@@ -51,12 +53,16 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        //
+        $recipes = $this->recipe->whereHas('categories', function ($query) use ($category) {
+            $query->where('category_id', $category->id);
+        })->get();
+
+        return view('welcome', compact('recipes'));
     }
 
     /**
