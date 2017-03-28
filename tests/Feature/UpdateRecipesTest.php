@@ -2,7 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\{User, Recipe};
+use App\{
+    User,
+    Recipe,
+    Category
+};
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -63,14 +67,14 @@ class UpdateRecipesTest extends TestCase
     {
         $this->be($user = factory(User::class)->create());
         $oldRecipe = factory(Recipe::class)->create(['user_id' => $user->id]);
-        $newRecipe = factory(Recipe::class)->make(['user_id' => $user->id]);
+        $newRecipe = $this->makeRecipe(['user_id' => $user->id], factory(Category::class, 3)->create());
 
-        $this->post("/recipe/{$oldRecipe->id}/update", $newRecipe->toArray());
+        $this->post("/recipe/{$oldRecipe->id}/update", $newRecipe);
 
         $recipe = Recipe::find($oldRecipe->id);
 
-        $this->assertEquals($newRecipe->title, $recipe->title);
-        $this->assertEquals($newRecipe->description, $recipe->description);
+        $this->assertEquals($newRecipe['title'], $recipe->title);
+        $this->assertEquals($newRecipe['description'], $recipe->description);
     }
 
     /** @test */
@@ -79,15 +83,15 @@ class UpdateRecipesTest extends TestCase
         $user = factory(User::class)->create();
         $loggedUser = factory(User::class)->create();
         $oldRecipe = factory(Recipe::class)->create(['user_id' => $user->id]);
-        $newRecipe = factory(Recipe::class)->make(['user_id' => $loggedUser->id]);
+        $newRecipe = $this->makeRecipe(['user_id' => $user->id], factory(Category::class, 3)->create());
 
         $this->be($loggedUser);
-        $this->post("/recipe/{$oldRecipe->id}/update", $newRecipe->toArray())
+        $this->post("/recipe/{$oldRecipe->id}/update", $newRecipe)
              ->assertRedirect('/');
 
         $recipe = Recipe::find($oldRecipe->id);
 
-        $this->assertNotEquals($newRecipe->toArray(), $recipe->toArray());
+        $this->assertNotEquals($newRecipe, $recipe->toArray());
     }
 
     /** @test */
@@ -95,9 +99,9 @@ class UpdateRecipesTest extends TestCase
     {
         $this->be($user = factory(User::class)->create());
         $oldRecipe = factory(Recipe::class)->create(['user_id' => $user->id]);
-        $newRecipe = factory(Recipe::class)->make(['user_id' => $user->id]);
+        $newRecipe = $this->makeRecipe(['user_id' => $user->id], factory(Category::class, 3)->create());
 
-        $this->post("/recipe/{$oldRecipe->id}/update", $newRecipe->toArray())
+        $this->post("/recipe/{$oldRecipe->id}/update", $newRecipe)
              ->assertRedirect('/recipe/' . $oldRecipe->id);
     }
 
@@ -132,5 +136,31 @@ class UpdateRecipesTest extends TestCase
 
         $this->post("/recipe/{$recipe->id}/update", $newRecipe->toArray())
              ->assertSessionHasErrors(['cover']);
+    }
+
+    /** @test */
+    function category_id_field_is_required()
+    {
+        $this->be($user = factory(User::class)->create());
+        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $newRecipe = factory(Recipe::class)->make(['user_id' => $user->id]);
+
+        $this->post("/recipe/{$recipe->id}/update", $newRecipe->toArray())
+             ->assertSessionHasErrors(['category_id']);
+    }
+
+    protected function makeRecipe($overrides = [], $categories)
+    {
+        $recipe = factory(Recipe::class)->make($overrides);
+
+        $post = [
+            'title' => $recipe->title,
+            'description' => $recipe->description,
+            'cover' => $recipe->cover,
+            'featured' => $recipe->featured,
+            'category_id' => $categories->pluck('id')
+        ];
+
+        return $post;
     }
 }

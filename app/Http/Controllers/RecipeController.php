@@ -90,7 +90,8 @@ class RecipeController extends Controller
         $this->validate($request, [
             'title' => 'required:max:100',
             'description' => 'required',
-            'cover' => 'required'
+            'cover' => 'required',
+            'category_id' => 'required'
         ]);
         $recipe->update($request->only(['title', 'description', 'cover']));
         $feature = $request->featured ? $recipe->feature() : $recipe->unfeature();
