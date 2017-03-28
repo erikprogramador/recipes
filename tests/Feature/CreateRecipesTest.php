@@ -2,7 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\{User, Recipe};
+use App\{
+    User,
+    Recipe,
+    Category
+};
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -91,5 +95,31 @@ class CreateRecipesTest extends TestCase
         $fistRecipe = Recipe::first();
 
         $this->assertFalse($fistRecipe->isFeatured());
+    }
+
+    /** @test */
+    function a_recipe_can_have_many_categories()
+    {
+        $recipe = factory(Recipe::class)->make();
+        $categories = factory(Category::class, 3)->create();
+
+        $post = [
+            'title' => $recipe->title,
+            'description' => $recipe->description,
+            'cover' => $recipe->cover,
+            'category_id' => $categories->pluck('id')
+        ];
+
+        $this->be(factory(User::class)->create());
+        $this->post('/recipe/store', $post)
+             ->assertRedirect('/recipe/1');
+
+        $find = Recipe::find(1);
+
+        $newCategories = $find->categories;
+
+        for ($i = 0; $i < 3; $i++) {
+            $this->assertEquals($newCategories[$i]->title, $categories[$i]->title);
+        }
     }
 }

@@ -51,6 +51,7 @@ class RecipeController extends Controller
         ]);
         $recipe = $this->recipe->fill($request->only(['title', 'description', 'cover']));
         $recipe = auth()->user()->recipes()->save($recipe);
+        $recipe->categories()->attach($request->category_id);
         $feature = $request->featured ? $recipe->feature() : $recipe->unfeature();
 
         return redirect('/recipe/'.$recipe->id);

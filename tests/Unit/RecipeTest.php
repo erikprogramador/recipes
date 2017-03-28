@@ -2,7 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\{User, Recipe};
+use App\{
+    User,
+    Recipe,
+    Category
+};
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -43,6 +47,20 @@ class RecipeTest extends TestCase
         $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
 
         $this->assertEquals($user->id, $recipe->owner->id);
+    }
+
+    /** @test */
+    function it_has_many_categories()
+    {
+        $recipe = factory(Recipe::class)->create();
+        $categories = factory(Category::class, 3)->create();
+
+        $recipe->categories()->attach($categories);
+        $newCategories = $recipe->categories;
+
+        for ($i = 0; $i < 3; $i++) {
+            $this->assertEquals($newCategories[$i]->title, $categories[$i]->title);
+        }
     }
 
     /** @test */
