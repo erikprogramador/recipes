@@ -1,4 +1,15 @@
 {{ csrf_field() }}
+<div>
+    <select name="category_id[]" id="category_id" multiple required style="display: block;">
+        <option value="" disabled selected>Choose categories</option>
+        {{-- TODO: Move this to the view --}}
+        @foreach (\App\Category::all() as $category)
+            <option value="{{ $category->id }}" {{ isset($recipe) ? $recipe->categoryIsSelected($category) : '' }}>{{ $category->title }}</option>
+        @endforeach
+    </select>
+    {{-- <label for="category_id">Select categories</label> --}}
+</div>
+
 <div class="input-field">
     <label for="title">Title:</label>
     <input type="text" name="title" id="title" placeholder="Title" value="{{ old('title') }}{{ $recipe->title ?? null }}">
@@ -11,17 +22,6 @@
 <div>
     <input type="checkbox" name="featured" id="featured" {{ isset($recipe) ? $recipe->checked() : null }}>
     <label for="featured">Featured</label>
-</div>
-
-<div class="input-field col s12">
-    <select name="category_id" id="category_id" multiple required>
-        <option value="" disabled selected>Choose categories</option>
-        {{-- TODO: Move this to the view --}}
-        @foreach (\App\Category::all() as $category)
-            <option value="{{ $category->id }}">{{ $category->title }}</option>
-        @endforeach
-    </select>
-    <label for="category_id">Select categories</label>
 </div>
 
 <div class="file-container">

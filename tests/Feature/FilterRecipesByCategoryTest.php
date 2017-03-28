@@ -24,7 +24,7 @@ class FilterRecipesByCategoryTest extends TestCase
             $noShow->categories()->attach(factory(Category::class)->create());
         }
 
-        $this->get('/'. $categories->slug)
+        $this->get('/recipe/category/'. $categories->slug)
              ->assertSee($recipe->title)
              ->assertDontSee($noShow->title);
     }

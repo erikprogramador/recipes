@@ -106,4 +106,16 @@ class RecipeTest extends TestCase
             $this->assertEquals($newCategories[$i]->title, $categories[$i]->title);
         }
     }
+
+    /** @test */
+    function it_should_return_if_a_category_is_associated_with()
+    {
+        $categories = factory(Category::class, 3)->create();
+        $recipe = factory(Recipe::class)->create();
+        $noAssociate = factory(Category::class)->create();
+        $recipe->categories()->attach($categories);
+
+        $this->assertEquals('selected', $recipe->categoryIsSelected($categories->first()));
+        $this->assertNotEquals('selected', $recipe->categoryIsSelected($noAssociate));
+    }
 }

@@ -58,6 +58,11 @@ class Recipe extends Model
         return $this;
     }
 
+    public function categoryIsSelected(Category $category) : string
+    {
+        return $this->categories->contains('id', $category->id) ? 'selected' : '';
+    }
+
     protected function toggleFeatured(bool $state) : self
     {
         $this->featured = $state;
