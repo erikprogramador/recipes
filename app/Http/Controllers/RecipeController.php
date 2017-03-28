@@ -47,7 +47,8 @@ class RecipeController extends Controller
         $this->validate($request, [
             'title' => 'required:max:100',
             'description' => 'required',
-            'cover' => 'required'
+            'cover' => 'required',
+            'category_id' => 'required'
         ]);
         $recipe = $this->recipe->createWithCategories($request->only(['title', 'description', 'cover']), $request->category_id);
         $feature = $request->featured ? $recipe->feature() : $recipe->unfeature();

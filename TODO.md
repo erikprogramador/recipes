@@ -7,7 +7,7 @@
 - [x] ~~Delete a **Recipe**~~
 - [x] ~~Feature a **Recipe**~~
 - [x] ~~Create **Categories**~~
-- [ ] Associate a **Recipe** with multiple **Categories**
+- [x] ~~Associate a **Recipe** with multiple **Categories**~~
 - [ ] Filter by **Category**
 - [ ] Print a **Recipe**
 

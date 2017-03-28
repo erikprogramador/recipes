@@ -116,6 +116,16 @@ class CreateRecipesTest extends TestCase
         }
     }
 
+        /** @test */
+    function a_recipe_must_have_a_category()
+    {
+        $recipe = factory(Recipe::class)->make();
+
+        $this->be(factory(User::class)->create());
+        $this->post('/recipe/store', $recipe->toArray())
+             ->assertSessionHasErrors('category_id');
+    }
+
     protected function makeRecipe($overrides = [], $categories)
     {
         $recipe = factory(Recipe::class)->make($overrides);
