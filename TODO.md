@@ -13,6 +13,15 @@
 - [ ] Include **Prepare Mode** to a **Recipe**
 - [ ] Print a **Recipe**
 
+## Refactoring
+- [ ] Add **Dusk(selinium)** tests
+- [ ] Upload **Image**
+- [ ] Styling
+- [ ] Show recipe **Cover Image**
+- [ ] Add a link to create a **Category**
+- [ ] Add a link to filter by **Category**
+- [ ] Display errors
+
 ## Ignore
 
 - [x] ~~Delete **Categories**~~
