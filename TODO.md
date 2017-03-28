@@ -18,9 +18,10 @@
 - [ ] Upload **Image**
 - [ ] Styling
 - [ ] Show recipe **Cover Image**
-- [ ] Add a link to create a **Category**
-- [ ] Add a link to filter by **Category**
+- [x] ~~Add a link to create a **Category**~~
+- [x] ~~Add a link to filter by **Category**~~
 - [x] ~~Display errors~~
+- [ ] Remove models call from views
 
 ## Ignore
 
