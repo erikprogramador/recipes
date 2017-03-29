@@ -17,11 +17,11 @@
 - [ ] Add **Dusk(selinium)** tests
 - [ ] Upload **Image**
 - [ ] Styling
-- [ ] Show recipe **Cover Image**
+- [x] ~~Show recipe **Cover Image**~~
 - [x] ~~Add a link to create a **Category**~~
 - [x] ~~Add a link to filter by **Category**~~
 - [x] ~~Display errors~~
-- [ ] Remove models call from views
+- [x] ~~Remove models call from views~~
 
 ## Ignore
 

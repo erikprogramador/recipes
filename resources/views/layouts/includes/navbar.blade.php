@@ -11,7 +11,7 @@
                 @if (auth()->check())
                     <li><a class="dropdown-button" href="#!" data-activates="dropdown2">Categories<i class="material-icons right">arrow_drop_down</i></a></li>
                     <ul id="dropdown2" class="dropdown-content">
-                        @foreach (\App\Category::all() as $category)
+                        @foreach ($categories as $category)
                             <li><a href="/recipe/category/{{ $category->slug }}">{{ $category->title }}</a></li>
                         @endforeach
                     </ul>

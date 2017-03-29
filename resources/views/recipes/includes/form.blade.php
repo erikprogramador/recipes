@@ -3,7 +3,7 @@
     <select name="category_id[]" id="category_id" multiple required style="display: block;">
         <option value="" disabled selected>Choose categories</option>
         {{-- TODO: Move this to the view --}}
-        @foreach (\App\Category::all() as $category)
+        @foreach ($categories as $category)
             <option value="{{ $category->id }}" {{ isset($recipe) ? $recipe->categoryIsSelected($category) : '' }}>{{ $category->title }}</option>
         @endforeach
     </select>
