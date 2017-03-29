@@ -7,6 +7,11 @@ Auth::routes();
 Route::get('home', 'HomeController@index');
 
 /*
+ * User
+ */
+Route::get('user/{user}/recipes', 'UserController@recipes');
+
+/*
  * Recipes
  */
 Route::get('recipe/create', 'RecipeController@create');

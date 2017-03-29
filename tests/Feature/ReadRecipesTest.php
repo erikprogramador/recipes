@@ -2,7 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Recipe;
+use App\{
+    User,
+    Recipe
+};
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -33,5 +36,17 @@ class ReadRecipesTest extends TestCase
         $this->get('/recipe/'.$recipe->id)
              ->assertSee($recipe->title)
              ->assertSee($recipe->description);
+    }
+
+    /** @test */
+    function a_user_can_see_there_recipes()
+    {
+        $this->be($user = factory(User::class)->create());
+        $userRecipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $notUserRecipe = factory(Recipe::class)->create(['title' => 'XPTO Recipe']);
+
+        $this->get("/user/{$user->id}/recipes")
+             ->assertSee($userRecipe->title)
+             ->assertDontSee($notUserRecipe->title);
     }
 }
