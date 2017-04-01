@@ -8,13 +8,21 @@
             <p>{{ $recipe->description }}</p>
         </div>
         <div class="card-action">
-            <a href="/recipe/{{ $recipe->id }}">Read recipe...</a>
-            @if ($recipe->isOwner())
-                <a href="/recipe/{{ $recipe->id }}/update">Edit</a>
-                <form action="/recipe/{{ $recipe->id }}/delete" method="POST">
-                    <button type="submit">Delete</button>
-                </form>
-            @endif
+            <div class="row">
+                <div class="col s8">
+                    <a href="/recipe/{{ $recipe->id }}">Read recipe...</a>
+                </div>
+                @if ($recipe->isOwner())
+                    <div class="col s2">
+                        <a class="btn blue" href="/recipe/{{ $recipe->id }}/update">Edit</a>
+                    </div>
+                    <div class="col s2">
+                        <form action="/recipe/{{ $recipe->id }}/delete" method="POST">
+                            <button class="btn red" type="submit">Delete</button>
+                        </form>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 </div>
