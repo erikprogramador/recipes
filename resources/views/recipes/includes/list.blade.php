@@ -5,6 +5,10 @@
     <div class="card-stacked">
         <div class="card-content">
             <h4 class="card-title activator grey-text text-darken-4">{{ $recipe->title }}</h4>
+            @foreach ($recipe->categories as $category)
+                <span class="new badge">{{ $category->title }}</span>
+            @endforeach
+            <br>
             <p>{{ $recipe->description }}</p>
         </div>
         <div class="card-action">
