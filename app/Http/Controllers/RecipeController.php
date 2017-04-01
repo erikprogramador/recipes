@@ -51,6 +51,12 @@ class RecipeController extends Controller
             'category_id' => 'required'
         ]);
         $recipe = $this->recipe->createWithCategories($request->only(['title', 'description', 'cover']), $request->category_id);
+        if ($request->ingredients && count($request->ingredients) > 0) {
+            foreach ($request->ingredients as $ingredient) {
+                $ingredient['recipe_id'] = $recipe->id;
+                $ingredients = \App\Ingredient::create($ingredient);
+            }
+        }
         $feature = $request->featured ? $recipe->feature() : $recipe->unfeature();
 
         return redirect('/recipe/'.$recipe->id);

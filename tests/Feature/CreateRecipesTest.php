@@ -5,7 +5,8 @@ namespace Tests\Feature;
 use App\{
     User,
     Recipe,
-    Category
+    Category,
+    Ingredient
 };
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -139,5 +140,21 @@ class CreateRecipesTest extends TestCase
         ];
 
         return $post;
+    }
+
+    /** @test */
+    function a_recipe_can_attach_many_ingredients()
+    {
+        $this->be($user = factory(User::class)->create());
+        $recipe = $this->makeRecipe(['user_id' => $user->id], factory(Category::class)->create());
+        $ingredients = factory(Ingredient::class, 3)->make();
+        $recipe['ingredients'] = $ingredients->toArray();
+
+        $this->post('/recipe/store', $recipe)
+              ->assertStatus(302);
+
+        $find = Recipe::find(4);
+
+        $this->assertEquals(3, $find->ingredients->count());
     }
 }

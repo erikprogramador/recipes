@@ -5,7 +5,8 @@ namespace Tests\Unit;
 use App\{
     User,
     Recipe,
-    Category
+    Category,
+    Ingredient
 };
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -117,5 +118,14 @@ class RecipeTest extends TestCase
 
         $this->assertEquals('selected', $recipe->categoryIsSelected($categories->first()));
         $this->assertNotEquals('selected', $recipe->categoryIsSelected($noAssociate));
+    }
+
+    /** @test */
+    function it_has_many_expedients()
+    {
+        $recipe = factory(Recipe::class)->create();
+        $ingredients = factory(Ingredient::class, 3)->create(['recipe_id' => $recipe->id]);
+
+        $this->assertEquals(3, $recipe->ingredients->count());
     }
 }

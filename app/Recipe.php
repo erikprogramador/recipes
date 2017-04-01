@@ -18,6 +18,11 @@ class Recipe extends Model
         return $this->belongsToMany(Category::class);
     }
 
+    public function ingredients()
+    {
+        return $this->hasMany(Ingredient::class);
+    }
+
     public function isOwner(User $user = null) : bool
     {
         if (!$user && !auth()->user()) {

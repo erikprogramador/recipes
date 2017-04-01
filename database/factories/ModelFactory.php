@@ -32,3 +32,13 @@ $factory->define(App\Category::class, function (Faker\Generator $faker) {
         'slug' => $slug
     ];
 });
+
+$factory->define(App\Ingredient::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'quantity' => random_int(1, 10),
+        'recipe_id' => function () {
+            return factory(App\Recipe::class)->create()->id;
+        }
+    ];
+});
