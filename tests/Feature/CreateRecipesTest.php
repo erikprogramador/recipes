@@ -148,7 +148,8 @@ class CreateRecipesTest extends TestCase
         $this->be($user = factory(User::class)->create());
         $recipe = $this->makeRecipe(['user_id' => $user->id], factory(Category::class)->create());
         $ingredients = factory(Ingredient::class, 3)->make();
-        $recipe['ingredients'] = $ingredients->toArray();
+        $recipe['ingredients'] = $ingredients->pluck('name');
+        $recipe['quantity'] = $ingredients->pluck('quantity');
 
         $this->post('/recipe/store', $recipe)
               ->assertStatus(302);

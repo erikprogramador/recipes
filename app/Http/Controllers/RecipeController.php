@@ -52,9 +52,12 @@ class RecipeController extends Controller
         ]);
         $recipe = $this->recipe->createWithCategories($request->only(['title', 'description', 'cover']), $request->category_id);
         if ($request->ingredients && count($request->ingredients) > 0) {
-            foreach ($request->ingredients as $ingredient) {
-                $ingredient['recipe_id'] = $recipe->id;
-                $ingredients = \App\Ingredient::create($ingredient);
+            foreach ($request->ingredients as $key => $ingredient) {
+                $ingredients = \App\Ingredient::create([
+                    'name' => $ingredient,
+                    'quantity' => $request->quantity[$key],
+                    'recipe_id' => $recipe->id
+                ]);
             }
         }
         $feature = $request->featured ? $recipe->feature() : $recipe->unfeature();

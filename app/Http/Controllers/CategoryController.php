@@ -47,7 +47,7 @@ class CategoryController extends Controller
     {
         $this->validate($request, ['title' => 'required|max:50']);
         $this->category->createWithSlug($request->title);
-        return redirect('/category');
+        return redirect('/');
     }
 
     /**

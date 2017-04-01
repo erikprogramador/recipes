@@ -32,7 +32,7 @@ class CreateCategoriesTest extends TestCase
 
         $this->be(factory(User::class)->create());
         $this->post('/category/store', $category->toArray())
-             ->assertRedirect('/category');
+             ->assertRedirect('/');
     }
 
     /** @test */
@@ -42,7 +42,7 @@ class CreateCategoriesTest extends TestCase
         $category = factory(Category::class)->make();
 
         $this->post('/category/store', $category->toArray())
-             ->assertRedirect('/category');
+             ->assertRedirect('/');
 
         $find = Category::find(1);
 

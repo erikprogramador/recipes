@@ -14,9 +14,40 @@
     <label for="title">Title:</label>
     <input type="text" name="title" id="title" placeholder="Title" value="{{ old('title') }}{{ $recipe->title ?? null }}">
 </div>
+
 <div class="input-field">
     <label for="description">Description:</label>
     <textarea name="description" id="description" class="materialize-textarea" rows="10" placeholder="Description">{{ $recipe->description ?? null }}{{ old('description') }}</textarea>
+</div>
+
+<div class="input-field">
+    <label for="ingredients">Ingredients:</label>
+    <input type="text" name="ingredients[]" id="ingredients" placeholder="Ingredients" value="">
+</div>
+
+<div class="input-field">
+    <label for="quantity">Quantity:</label>
+    <input type="text" name="quantity[]" id="quantity" placeholder="Quantity" value="">
+</div>
+
+<div class="input-field">
+    <label for="ingredients">Ingredients:</label>
+    <input type="text" name="ingredients[]" id="ingredients" placeholder="Ingredients" value="">
+</div>
+
+<div class="input-field">
+    <label for="quantity">Quantity:</label>
+    <input type="text" name="quantity[]" id="quantity" placeholder="Quantity" value="">
+</div>
+
+<div class="input-field">
+    <label for="ingredients">Ingredients:</label>
+    <input type="text" name="ingredients[]" id="ingredients" placeholder="Ingredients" value="">
+</div>
+
+<div class="input-field">
+    <label for="quantity">Quantity:</label>
+    <input type="text" name="quantity[]" id="quantity" placeholder="Quantity" value="">
 </div>
 
 <div>
