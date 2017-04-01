@@ -5,6 +5,8 @@
         <div class="row">
             <div class="col s8 offset-s2">
                 <h1>{{ $recipe->title }}</h1>
+                <span><strong>{{ $recipe->owner->name }}</strong> <small>{{ $recipe->created_at->diffForHumans() }}</small></span>
+                <hr>
                 <img class="responseive-img" width="100%" src="{{ $recipe->cover }}" alt="{{ $recipe->title }}">
                 @if ($recipe->isOwner())
                     <div class="row">
