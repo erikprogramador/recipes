@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\{Recipe, Category};
 use Illuminate\Http\Request;
 
+/**
+ * @author Erik Vanderlei Fernandes <erik.vanderlei.programador>
+ * @version 1.0.0
+ */
 class CategoryController extends Controller
 {
     protected $category;

@@ -3,26 +3,60 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\{
+    HasMany,
+    BelongsTo,
+    BelongsToMany
+};
 
+/**
+ * @author Erik Vanderlei Fernandes <erik.vanderlei.programador>
+ * @version 1.0.0
+ */
 class Recipe extends Model
 {
+    /**
+     * Guarded fields
+     * @var array
+     */
     protected $guarded = [];
 
-    public function owner()
+    /**
+     * Define the relationship with user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function owner() : BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function categories()
+    /**
+     * Define the relationship with many categories
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function categories() : BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
 
-    public function ingredients()
+    /**
+     * Define the relationship with many ingredients
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ingredients() : HasMany
     {
         return $this->hasMany(Ingredient::class);
     }
 
+    /**
+     * Check if the auth or passed user is the recipe owner
+     *
+     * @param  User|null
+     * @return boolean
+     */
     public function isOwner(User $user = null) : bool
     {
         if (!$user && !auth()->user()) {
@@ -34,27 +68,55 @@ class Recipe extends Model
         return $this->isOwnerByUserId($user);
     }
 
+    /**
+     * Feature it
+     *
+     * @return self
+     */
     public function feature() : self
     {
         return $this->toggleFeatured(true);
     }
 
+    /**
+     * Unfeature it
+     *
+     * @return self
+     */
     public function unfeature() : self
     {
         return $this->toggleFeatured(false);
     }
 
+    /**
+     * Check if it is featured
+     *
+     * @return boolean
+     */
     public function isFeatured() : bool
     {
         return $this->featured;
     }
 
+    /**
+     * Verify if it is featured
+     * if is return checked else return null
+     *
+     * @return string|null
+     */
     public function checked() : ?string
     {
         return $this->featured ? 'checked' : null;
     }
 
-    public function createWithCategories(array $data, $categories)
+    /**
+     * Create it with many categories associate
+     *
+     * @param  array
+     * @param  \Illuminate\Database\Eloquent\Collection|array
+     * @return self
+     */
+    public function createWithCategories(array $data, $categories) : self
     {
         $this->fill($data);
         $recipe = auth()->user()->recipes()->save($this);
@@ -63,11 +125,23 @@ class Recipe extends Model
         return $this;
     }
 
+    /**
+     * Check if it is selected
+     *
+     * @param  Category
+     * @return string
+     */
     public function categoryIsSelected(Category $category) : string
     {
         return $this->categories->contains('id', $category->id) ? 'selected' : '';
     }
 
+    /**
+     * Feature or unfeature it
+     *
+     * @param  bool
+     * @return self
+     */
     protected function toggleFeatured(bool $state) : self
     {
         $this->featured = $state;
@@ -75,6 +149,12 @@ class Recipe extends Model
         return $this;
     }
 
+    /**
+     * Check if user is owner by there id
+     *
+     * @param  User
+     * @return boolean
+     */
     protected function isOwnerByUserId(User $user) : bool
     {
         return $user->id === $this->owner->id;

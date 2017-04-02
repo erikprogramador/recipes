@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+/**
+ * @author Erik Vanderlei Fernandes <erik.vanderlei.programador>
+ * @version 1.0.0
+ */
 class HomeController extends Controller
 {
     /**
@@ -14,15 +18,5 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return view('home');
     }
 }

@@ -5,13 +5,26 @@ namespace App\Http\Controllers;
 use App\Recipe;
 use Illuminate\Http\Request;
 
+/**
+ * @author Erik Vanderlei Fernandes <erik.vanderlei.programador>
+ * @version 1.0.0
+ */
 class RecipeController extends Controller
 {
+    /**
+     * Recipe
+     * @var \App\Recip
+     */
     protected $recipe;
 
+    /**
+     * Constructor
+     *
+     * @param Recipe
+     */
     public function __construct(Recipe $recipe)
     {
-        $this->middleware('auth')->except(['show']);
+        $this->middleware('auth')->except(['index', 'show']);
         $this->middleware('owner')->only(['edit', 'update', 'destroy']);
         $this->recipe = $recipe;
     }
@@ -23,7 +36,8 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        //
+        $recipes = Recipe::all();
+        return view('welcome', compact('recipes'));
     }
 
     /**
