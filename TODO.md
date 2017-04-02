@@ -10,13 +10,12 @@
 - [x] ~~Associate a **Recipe** with multiple **Categories**~~
 - [x] ~~Filter by **Category**~~
 - [ ] Include **Ingredients** to a **Recipe**
-- [ ] Include **Prepare Mode** to a **Recipe**
 - [ ] Print a **Recipe**
 
 ## Refactoring
-- [ ] Add **Dusk(selinium)** tests
+
 - [ ] Upload **Image**
-- [ ] Styling
+- [x] ~~Styling~~
 - [x] ~~Show recipe **Cover Image**~~
 - [x] ~~Add a link to create a **Category**~~
 - [x] ~~Add a link to filter by **Category**~~
@@ -27,3 +26,5 @@
 
 - [x] ~~Delete **Categories**~~
 - [x] ~~Update **Category**~~
+- [x] ~~Include **Prepare Mode** to a **Recipe**~~
+- [x] ~~Add **Dusk(selinium)** tests~~
