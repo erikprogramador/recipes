@@ -22,44 +22,42 @@
 
 <div class="input-field">
     <label for="ingredients">Ingredients:</label>
-    <input type="text" name="ingredients[]" id="ingredients" placeholder="Ingredients" value="">
+    <input type="text" name="ingredients[]" id="ingredients" placeholder="Ingredients" value="{{ $recipe->ingredients[0]->name ?? null }}">
 </div>
 
 <div class="input-field">
     <label for="quantity">Quantity:</label>
-    <input type="text" name="quantity[]" id="quantity" placeholder="Quantity" value="">
+    <input type="text" name="quantity[]" id="quantity" placeholder="Quantity" value="{{ $recipe->ingredients[0]->quantity ?? null }}">
 </div>
 
 <div class="input-field">
     <label for="ingredients">Ingredients:</label>
-    <input type="text" name="ingredients[]" id="ingredients" placeholder="Ingredients" value="">
+    <input type="text" name="ingredients[]" id="ingredients" placeholder="Ingredients" value="{{ $recipe->ingredients[1]->name ?? null }}">
 </div>
 
 <div class="input-field">
     <label for="quantity">Quantity:</label>
-    <input type="text" name="quantity[]" id="quantity" placeholder="Quantity" value="">
+    <input type="text" name="quantity[]" id="quantity" placeholder="Quantity" value="{{ $recipe->ingredients[1]->quantity ?? null }}">
 </div>
 
 <div class="input-field">
     <label for="ingredients">Ingredients:</label>
-    <input type="text" name="ingredients[]" id="ingredients" placeholder="Ingredients" value="">
+    <input type="text" name="ingredients[]" id="ingredients" placeholder="Ingredients" value="{{ $recipe->ingredients[2]->name ?? null }}">
 </div>
 
 <div class="input-field">
     <label for="quantity">Quantity:</label>
-    <input type="text" name="quantity[]" id="quantity" placeholder="Quantity" value="">
+    <input type="text" name="quantity[]" id="quantity" placeholder="Quantity" value="{{ $recipe->ingredients[2]->quantity ?? null }}">
+</div>
+
+<div class="input-field">
+    <label for="cover">Cover:</label>
+    <input type="text" name="cover" id="cover" placeholder="Put the link to the recipe cover" value="{{ $recipe->cover ?? null }}{{ old('cover') }}">
 </div>
 
 <div>
     <input type="checkbox" name="featured" id="featured" {{ isset($recipe) ? $recipe->checked() : null }}>
     <label for="featured">Featured</label>
-</div>
-
-<div class="file-container">
-    <label for="cover" class="waves-effect waves-light btn red">
-        Select a cover {{ $recipe->cover ?? null }}
-    </label>
-    <input type="file" name="cover" id="cover" class="file-input" value="{{ $recipe->cover ?? null }}">
 </div>
 
 <div class="center">

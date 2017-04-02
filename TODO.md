@@ -9,12 +9,12 @@
 - [x] ~~Create **Categories**~~
 - [x] ~~Associate a **Recipe** with multiple **Categories**~~
 - [x] ~~Filter by **Category**~~
-- [ ] Include **Ingredients** to a **Recipe**
+- [x] ~~Include **Ingredients** to a **Recipe**~~
 - [ ] Print a **Recipe**
 
 ## Refactoring
 
-- [ ] Upload **Image**
+- [x] ~~Upload **Image**~~
 - [x] ~~Styling~~
 - [x] ~~Show recipe **Cover Image**~~
 - [x] ~~Add a link to create a **Category**~~
