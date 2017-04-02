@@ -144,9 +144,7 @@ class Recipe extends Model
      */
     public function addIngredients($ingredients) : self
     {
-        $ingredients->each(function ($ingredient) {
-            $this->ingredients()->save($ingredient);
-        });
+        $this->ingredients()->saveMany($ingredients);
         return $this;
     }
 
