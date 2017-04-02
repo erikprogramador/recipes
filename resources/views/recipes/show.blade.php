@@ -28,6 +28,7 @@
                     </div>
                 @endif
                 <p>{{ $recipe->description }}</p>
+                <a href="/print/recipe/{{ $recipe->id }}" class="btn purple">Print</a>
             </div>
         </div>
     </div>

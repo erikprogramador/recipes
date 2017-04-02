@@ -10,7 +10,7 @@
 - [x] ~~Associate a **Recipe** with multiple **Categories**~~
 - [x] ~~Filter by **Category**~~
 - [x] ~~Include **Ingredients** to a **Recipe**~~
-- [ ] Print a **Recipe**
+- [x] ~~Print a **Recipe**~~
 
 ## Refactoring
 
