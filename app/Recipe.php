@@ -137,6 +137,20 @@ class Recipe extends Model
     }
 
     /**
+     * Add Ingredients to a Recipe
+     *
+     * @param \Illuminate\Database\Eloquent\Collection|arrray
+     * @return self
+     */
+    public function addIngredients($ingredients) : self
+    {
+        $ingredients->each(function ($ingredient) {
+            $this->ingredients()->save($ingredient);
+        });
+        return $this;
+    }
+
+    /**
      * Feature or unfeature it
      *
      * @param  bool

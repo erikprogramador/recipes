@@ -37,7 +37,8 @@ class CreateRecipesTest extends TestCase
         $this->be(factory(User::class)->create());
         $this->post('/recipe/store', $recipe);
 
-        $this->get('/recipe/1')
+        $lastRecipe = Recipe::latest()->get()->first();
+        $this->get('/recipe/'.$lastRecipe->id)
              ->assertSee($recipe['title'])
              ->assertSee($recipe['description']);
     }

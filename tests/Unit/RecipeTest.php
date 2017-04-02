@@ -128,4 +128,15 @@ class RecipeTest extends TestCase
 
         $this->assertEquals(3, $recipe->ingredients->count());
     }
+
+    /** @test */
+    function it_can_add_ingredients()
+    {
+        $recipe = factory(Recipe::class)->create();
+        $ingredients = factory(Ingredient::class, 3)->make();
+
+        $recipe->addIngredients($ingredients);
+
+        $this->assertCount(3, $recipe->ingredients);
+    }
 }

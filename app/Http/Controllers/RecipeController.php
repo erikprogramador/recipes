@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Recipe;
+use App\{
+    Recipe,
+    Ingredient
+};
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreRecipe;
 
 /**
  * @author Erik Vanderlei Fernandes <erik.vanderlei.programador>
@@ -56,23 +60,11 @@ class RecipeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRecipe $request)
     {
-        $this->validate($request, [
-            'title' => 'required:max:100',
-            'description' => 'required',
-            'cover' => 'required',
-            'category_id' => 'required'
-        ]);
         $recipe = $this->recipe->createWithCategories($request->only(['title', 'description', 'cover']), $request->category_id);
         if ($request->ingredients && count($request->ingredients) > 0) {
-            foreach ($request->ingredients as $key => $ingredient) {
-                $ingredients = \App\Ingredient::create([
-                    'name' => $ingredient,
-                    'quantity' => $request->quantity[$key],
-                    'recipe_id' => $recipe->id
-                ]);
-            }
+            $recipe->addIngredients($this->ingredientsWithQuantity($request));
         }
         $feature = $request->featured ? $recipe->feature() : $recipe->unfeature();
 
@@ -108,27 +100,15 @@ class RecipeController extends Controller
      * @param  \App\Recipe  $recipe
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Recipe $recipe)
+    public function update(StoreRecipe $request, Recipe $recipe)
     {
-        $this->validate($request, [
-            'title' => 'required:max:100',
-            'description' => 'required',
-            'cover' => 'required',
-            'category_id' => 'required'
-        ]);
         $recipe->update($request->only(['title', 'description', 'cover']));
         $recipe->categories()->sync($request->category_id);
         $feature = $request->featured ? $recipe->feature() : $recipe->unfeature();
 
         $recipe->ingredients()->delete();
         if ($request->ingredients && count($request->ingredients) > 0) {
-            foreach ($request->ingredients as $key => $ingredient) {
-                $ingredients = \App\Ingredient::create([
-                    'name' => $ingredient,
-                    'quantity' => $request->quantity[$key],
-                    'recipe_id' => $recipe->id
-                ]);
-            }
+            $recipe->addIngredients($this->ingredientsWithQuantity($request));
         }
 
         return redirect('/recipe/' . $recipe->id)->with(['message' => 'Recipe successfully updated!', 'recipe' => $recipe]);
@@ -144,5 +124,20 @@ class RecipeController extends Controller
     {
         $recipe->delete();
         return redirect('/')->with('message', 'The recipe is deleted with success!');
+    }
+
+    /**
+     * Format a array with ingredients and quandities
+     *
+     * @return array
+     */
+    public function ingredientsWithQuantity(Request $request)
+    {
+        return request('ingredients')->map(function ($value, $key) use ($request) {
+            return new Ingredient([
+                'name' => $value,
+                'quantity' => $request->quantity[$key]
+            ]);
+        });
     }
 }
