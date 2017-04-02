@@ -106,6 +106,17 @@ class RecipeController extends Controller
         $recipe->categories()->sync($request->category_id);
         $feature = $request->featured ? $recipe->feature() : $recipe->unfeature();
 
+        $recipe->ingredients()->delete();
+        if ($request->ingredients && count($request->ingredients) > 0) {
+            foreach ($request->ingredients as $key => $ingredient) {
+                $ingredients = \App\Ingredient::create([
+                    'name' => $ingredient,
+                    'quantity' => $request->quantity[$key],
+                    'recipe_id' => $recipe->id
+                ]);
+            }
+        }
+
         return redirect('/recipe/' . $recipe->id)->with(['message' => 'Recipe successfully updated!', 'recipe' => $recipe]);
     }
 

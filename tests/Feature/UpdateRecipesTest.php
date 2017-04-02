@@ -5,7 +5,8 @@ namespace Tests\Feature;
 use App\{
     User,
     Recipe,
-    Category
+    Category,
+    Ingredient
 };
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -162,6 +163,33 @@ class UpdateRecipesTest extends TestCase
         $recipe->fresh();
 
         $this->assertEquals($recipe->categories->pluck('id'), $newRecipe['category_id']);
+    }
+
+    /** @test */
+    function a_recipe_can_update_there_ingredients()
+    {
+        $this->be($user = factory(User::class)->create());
+        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $categories = factory(Category::class)->create();
+        $ingredients = factory(Ingredient::class, 3)->create(['recipe_id' => $recipe->id]);
+        $recipe->categories()->attach($categories);
+        $newIngredients = factory(Ingredient::class, 2)->make();
+
+        $update = [
+            'title' => $recipe->title,
+            'description' => $recipe->description,
+            'cover' => $recipe->cover,
+            'category_id' => $categories->pluck('id'),
+            'ingredients' => $newIngredients->pluck('name'),
+            'quantity' => $newIngredients->pluck('quantity')
+        ];
+
+        $this->post("/recipe/{$recipe->id}/update", $update)
+             ->assertRedirect('/recipe/' . $recipe->id);
+
+        $recipe = Recipe::find($recipe->id);
+
+        $this->assertEquals(2, $recipe->ingredients->count());
     }
 
     protected function makeRecipe($overrides = [], $categories)
