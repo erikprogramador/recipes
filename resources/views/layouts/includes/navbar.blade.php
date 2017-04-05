@@ -19,12 +19,13 @@
                     </ul>
                     <li><a class="dropdown-button" href="#!" data-activates="dropdown1">{{ auth()->user()->name }}<i class="material-icons right">arrow_drop_down</i></a></li>
                     <ul id="dropdown1" class="dropdown-content">
-                        <form action="/logout" method="POST">
-                            {{ csrf_field() }}
-                            <li>
-                                <button type="submit">Logout</button>
-                            </li>
-                        </form>
+                        <li><a href="/user/{{ auth()->user()->id }}/recipes">My Recipes</a></li>
+                        <li>
+                            <form action="/logout" method="POST">
+                                {{ csrf_field() }}
+                                    <button type="submit">Logout</button>
+                            </form>
+                        </li>
                     </ul>
                 @endif
             </ul>
