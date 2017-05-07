@@ -111,7 +111,7 @@ class RecipeTest extends TestCase
     /** @test */
     function it_should_return_if_a_category_is_associated_with()
     {
-        $categories = create(Category::class, 3);
+        $categories = createMany(Category::class, 3);
         $recipe = create(Recipe::class);
         $noAssociate = create(Category::class);
         $recipe->categories()->attach($categories);
@@ -121,10 +121,10 @@ class RecipeTest extends TestCase
     }
 
     /** @test */
-    function it_has_many_expedients()
+    function it_has_many_ingredients()
     {
         $recipe = create(Recipe::class);
-        $ingredients = create(Ingredient::class, 3, ['recipe_id' => $recipe->id]);
+        $ingredients = createMany(Ingredient::class, 3, ['recipe_id' => $recipe->id]);
 
         $this->assertEquals(3, $recipe->ingredients->count());
     }
