@@ -41,11 +41,11 @@ class ReadRecipesTest extends TestCase
     /** @test */
     function a_user_can_see_there_recipes()
     {
-        $this->signIn();
-        $userRecipe = create(Recipe::class, ['user_id' => $this->user->id]);
+        $user = $this->signIn();
+        $userRecipe = create(Recipe::class, ['user_id' => $user->id]);
         $notUserRecipe = create(Recipe::class, ['title' => 'XPTO Recipe']);
 
-        $this->get("/user/{$this->user->id}/recipes")
+        $this->get("/user/{$user->id}/recipes")
              ->assertSee($userRecipe->title)
              ->assertDontSee($notUserRecipe->title);
     }

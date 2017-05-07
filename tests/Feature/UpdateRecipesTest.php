@@ -18,15 +18,14 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function only_the_owner_can_see_update_button_on_the_show_page_of_recipes()
     {
-        $this->signIn();
-        $user = $this->user;
+        $user = $this->signIn();
         $accessRecipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->signIn();
         $this->get("/recipe/{$accessRecipe->id}")
             ->assertDontSee('Edit');
 
-        $this->be($user);
+        $this->signIn($user);
         $this->get("/recipe/{$accessRecipe->id}")
             ->assertSee('Edit');
     }
@@ -34,15 +33,14 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function only_the_owner_can_see_update_button_on_the_home_page_of_recipes()
     {
-        $this->signIn();
-        $user = $this->user;
+        $user = $this->signIn();
         $accessRecipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->signIn();
         $this->get("/")
             ->assertDontSee('Edit');
 
-        $this->be($user);
+        $this->signIn($user);
         $this->get("/")
             ->assertSee('Edit');
     }
@@ -57,7 +55,7 @@ class UpdateRecipesTest extends TestCase
         $this->get("/recipe/{$recipe->id}/update")
              ->assertRedirect('/');
 
-        $this->be($user);
+        $this->signIn($user);
         $this->get("/recipe/{$recipe->id}/update")
              ->assertSee($recipe->title)
              ->assertSee($recipe->description);
@@ -66,8 +64,7 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function update_a_recipe()
     {
-        $this->signIn();
-        $user = $this->user;
+        $user = $this->signIn();
         $oldRecipe = create(Recipe::class, ['user_id' => $user->id]);
         $newRecipe = $this->makeRecipe(['user_id' => $user->id], createMany(Category::class, 3));
 
@@ -87,7 +84,7 @@ class UpdateRecipesTest extends TestCase
         $oldRecipe = create(Recipe::class, ['user_id' => $user->id]);
         $newRecipe = $this->makeRecipe(['user_id' => $user->id], createMany(Category::class, 3));
 
-        $this->be($loggedUser);
+        $this->signIn($loggedUser);
         $this->post("/recipe/{$oldRecipe->id}/update", $newRecipe)
              ->assertRedirect('/');
 
@@ -99,8 +96,7 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function when_a_recipe_are_update_needs_to_redirect_to_the_single_recipe()
     {
-        $this->signIn();
-        $user = $this->user;
+        $user = $this->signIn();
         $oldRecipe = create(Recipe::class, ['user_id' => $user->id]);
         $newRecipe = $this->makeRecipe(['user_id' => $user->id], createMany(Category::class, 3));
 
@@ -111,8 +107,7 @@ class UpdateRecipesTest extends TestCase
      /** @test */
     function title_field_is_required()
     {
-        $this->signIn();
-        $user = $this->user;
+        $user = $this->signIn();
         $recipe = create(Recipe::class, ['user_id' => $user->id]);
         $newRecipe = make(Recipe::class, ['title' => null, 'user_id' => $user->id]);
 
@@ -123,8 +118,7 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function description_field_is_required()
     {
-        $this->signIn();
-        $user = $this->user;
+        $user = $this->signIn();
         $recipe = create(Recipe::class, ['user_id' => $user->id]);
         $newRecipe = make(Recipe::class, ['description' => null, 'user_id' => $user->id]);
 
@@ -135,8 +129,7 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function cover_field_is_required()
     {
-        $this->signIn();
-        $user = $this->user;
+        $user = $this->signIn();
         $recipe = create(Recipe::class, ['user_id' => $user->id]);
         $newRecipe = make(Recipe::class, ['cover' => null, 'user_id' => $user->id]);
 
@@ -147,8 +140,7 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function category_id_field_is_required()
     {
-        $this->signIn();
-        $user = $this->user;
+        $user = $this->signIn();
         $recipe = create(Recipe::class, ['user_id' => $user->id]);
         $newRecipe = make(Recipe::class, ['user_id' => $user->id]);
 
@@ -159,8 +151,7 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function a_recipe_can_recive_categories_update()
     {
-        $this->signIn();
-        $user = $this->user;
+        $user = $this->signIn();
         $recipe = $this->createRecipe(['user_id' => $user->id], createMany(Category::class, 3));
         $newRecipe = $this->makeRecipe(['user_id' => $user->id], createMany(Category::class, 3));
 
@@ -175,8 +166,7 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function a_recipe_can_update_there_ingredients()
     {
-        $this->signIn();
-        $user = $this->user;
+        $user = $this->signIn();
         $recipe = create(Recipe::class, ['user_id' => $user->id]);
         $categories = create(Category::class);
         $ingredients = createMany(Ingredient::class, 3, ['recipe_id' => $recipe->id]);

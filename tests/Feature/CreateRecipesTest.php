@@ -131,8 +131,8 @@ class CreateRecipesTest extends TestCase
     /** @test */
     function a_recipe_can_attach_many_ingredients()
     {
-        $this->signIn();
-        $recipe = $this->makeRecipe(['user_id' => $this->user->id], create(Category::class));
+        $user = $this->signIn();
+        $recipe = $this->makeRecipe(['user_id' => $user->id], create(Category::class));
         $ingredients = makeMany(Ingredient::class, 3);
         $recipe['ingredients'] = $ingredients->pluck('name');
         $recipe['quantity'] = $ingredients->pluck('quantity');

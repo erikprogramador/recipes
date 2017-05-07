@@ -13,8 +13,7 @@ class DeleteRecipesTest extends TestCase
     /** @test */
     function a_user_can_delete_a_recipe()
     {
-        $this->signIn();
-        $user = $this->user;
+        $user = $this->signIn();
         $recipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->post("/recipe/{$recipe->id}/delete", $recipe->toArray())
@@ -37,8 +36,7 @@ class DeleteRecipesTest extends TestCase
     /** @test */
     function only_the_owner_can_delete_a_recipe()
     {
-        $this->signIn();
-        $user = $this->user;
+        $user = $this->signIn();
         $recipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->signIn();
@@ -54,15 +52,14 @@ class DeleteRecipesTest extends TestCase
     /** @test */
     function only_the_owner_can_see_the_delete_button_on_show_page()
     {
-        $this->signIn();
-        $user = $this->user;
+        $user = $this->signIn();
         $recipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->signIn();
         $this->get("/recipe/{$recipe->id}")
              ->assertDontSee('Delete');
 
-        $this->be($user);
+        $this->signIn($user);
         $this->get("/recipe/{$recipe->id}")
              ->assertSee('Delete');
     }
@@ -70,15 +67,14 @@ class DeleteRecipesTest extends TestCase
     /** @test */
     function only_the_owner_can_see_the_delete_button_on_home_page()
     {
-        $this->signIn();
-        $user = $this->user;
+        $user = $this->signIn();
         $recipe = createMany(Recipe::class, 5, ['user_id' => $user->id]);
 
         $this->signIn();
         $this->get("/")
              ->assertDontSee('Delete');
 
-        $this->be($user);
+        $this->signIn($user);
         $this->get("/")
              ->assertSee('Delete');
     }
