@@ -56,7 +56,7 @@ class CreateRecipesTest extends TestCase
     /** @test */
     function description_field_is_required()
     {
-        $recipe = $this->makeRecipe(['description' => null], createMany(Category::class, 3)));
+        $recipe = $this->makeRecipe(['description' => null], createMany(Category::class, 3));
 
         $this->signIn();
         $this->post('/recipe/store', $recipe)
