@@ -69,7 +69,7 @@ class CreateCategoriesTest extends TestCase
         $category = factory(Category::class)->make(['title' => Faker::sentence(100)]);
 
         $this->signIn();
-        $this->post($this->storeUr, $category->toArray())
+        $this->post($this->storeUrl, $category->toArray())
              ->assertSessionHasErrors('title');
     }
 }

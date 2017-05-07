@@ -14,6 +14,7 @@ class DeleteRecipesTest extends TestCase
     function a_user_can_delete_a_recipe()
     {
         $this->signIn();
+        $user = $this->user;
         $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
 
         $this->post("/recipe/{$recipe->id}/delete", $recipe->toArray())
