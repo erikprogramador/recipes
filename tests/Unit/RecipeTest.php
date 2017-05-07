@@ -83,17 +83,17 @@ class RecipeTest extends TestCase
 
         $this->assertFalse($recipe->isOwner());
 
-        $this->be($user);
+        $this->signIn($user);
         $this->assertTrue($recipe->isOwner());
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->assertFalse($recipe->isOwner());
     }
 
     /** @test */
     function it_can_create_a_recipe_with_a_user_and_many_categories()
     {
-        $this->be(create(User::class));
+        $this->signIn();
         $recipe = make(Recipe::class);
         $categories = createMany(Category::class, 3);
 
