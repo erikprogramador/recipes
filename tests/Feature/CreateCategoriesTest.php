@@ -28,7 +28,7 @@ class CreateCategoriesTest extends TestCase
     /** @test */
     function only_logged_users_can_create_a_category()
     {
-        $category = factory(Category::class)->make();
+        $category = make(Category::class);
 
         $this->post($this->storeUrl, $category->toArray())
              ->assertRedirect('/login');
@@ -42,7 +42,7 @@ class CreateCategoriesTest extends TestCase
     function a_user_can_create_a_category()
     {
         $this->signIn();
-        $category = factory(Category::class)->make();
+        $category = make(Category::class);
 
         $this->post($this->storeUrl, $category->toArray())
              ->assertRedirect('/');
@@ -56,7 +56,7 @@ class CreateCategoriesTest extends TestCase
     /** @test */
     function a_category_must_have_a_title()
     {
-        $category = factory(Category::class)->make(['title' => null]);
+        $category = make(Category::class, ['title' => null]);
 
         $this->signIn();
         $this->post($this->storeUrl, $category->toArray())
@@ -66,7 +66,7 @@ class CreateCategoriesTest extends TestCase
     /** @test */
     function a_category_title_can_not_have_more_than_fifty_caracters()
     {
-        $category = factory(Category::class)->make(['title' => Faker::sentence(100)]);
+        $category = make(Category::class, ['title' => Faker::sentence(100)]);
 
         $this->signIn();
         $this->post($this->storeUrl, $category->toArray())
