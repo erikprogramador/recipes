@@ -18,10 +18,11 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function only_the_owner_can_see_update_button_on_the_show_page_of_recipes()
     {
-        $user = factory(User::class)->create();
+        $this->signIn();
+        $user = $this->user;
         $accessRecipe = factory(Recipe::class)->create(['user_id' => $user->id]);
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->get("/recipe/{$accessRecipe->id}")
             ->assertDontSee('Edit');
 
@@ -33,10 +34,11 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function only_the_owner_can_see_update_button_on_the_home_page_of_recipes()
     {
-        $user = factory(User::class)->create();
+        $this->signIn();
+        $user = $this->user;
         $accessRecipe = factory(Recipe::class)->create(['user_id' => $user->id]);
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->get("/")
             ->assertDontSee('Edit');
 
@@ -51,13 +53,11 @@ class UpdateRecipesTest extends TestCase
         $user = factory(User::class)->create();
         $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
 
-        $this->be(factory(User::class)->create());
-
+        $this->signIn();
         $this->get("/recipe/{$recipe->id}/update")
              ->assertRedirect('/');
 
         $this->be($user);
-
         $this->get("/recipe/{$recipe->id}/update")
              ->assertSee($recipe->title)
              ->assertSee($recipe->description);
@@ -66,7 +66,8 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function update_a_recipe()
     {
-        $this->be($user = factory(User::class)->create());
+        $this->signIn();
+        $user = $this->user;
         $oldRecipe = factory(Recipe::class)->create(['user_id' => $user->id]);
         $newRecipe = $this->makeRecipe(['user_id' => $user->id], factory(Category::class, 3)->create());
 
@@ -98,7 +99,8 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function when_a_recipe_are_update_needs_to_redirect_to_the_single_recipe()
     {
-        $this->be($user = factory(User::class)->create());
+        $this->signIn();
+        $user = $this->user;
         $oldRecipe = factory(Recipe::class)->create(['user_id' => $user->id]);
         $newRecipe = $this->makeRecipe(['user_id' => $user->id], factory(Category::class, 3)->create());
 
@@ -109,7 +111,8 @@ class UpdateRecipesTest extends TestCase
      /** @test */
     function title_field_is_required()
     {
-        $this->be($user = factory(User::class)->create());
+        $this->signIn();
+        $user = $this->user;
         $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
         $newRecipe = factory(Recipe::class)->make(['title' => null, 'user_id' => $user->id]);
 
@@ -120,7 +123,8 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function description_field_is_required()
     {
-        $this->be($user = factory(User::class)->create());
+        $this->signIn();
+        $user = $this->user;
         $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
         $newRecipe = factory(Recipe::class)->make(['description' => null, 'user_id' => $user->id]);
 
@@ -131,7 +135,8 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function cover_field_is_required()
     {
-        $this->be($user = factory(User::class)->create());
+        $this->signIn();
+        $user = $this->user;
         $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
         $newRecipe = factory(Recipe::class)->make(['cover' => null, 'user_id' => $user->id]);
 
@@ -142,7 +147,8 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function category_id_field_is_required()
     {
-        $this->be($user = factory(User::class)->create());
+        $this->signIn();
+        $user = $this->user;
         $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
         $newRecipe = factory(Recipe::class)->make(['user_id' => $user->id]);
 
@@ -153,7 +159,8 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function a_recipe_can_recive_categories_update()
     {
-        $this->be($user = factory(User::class)->create());
+        $this->signIn();
+        $user = $this->user;
         $recipe = $this->createRecipe(['user_id' => $user->id], factory(Category::class, 3)->create());
         $newRecipe = $this->makeRecipe(['user_id' => $user->id], factory(Category::class, 3)->create());
 
@@ -168,7 +175,8 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function a_recipe_can_update_there_ingredients()
     {
-        $this->be($user = factory(User::class)->create());
+        $this->signIn();
+        $user = $this->user;
         $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
         $categories = factory(Category::class)->create();
         $ingredients = factory(Ingredient::class, 3)->create(['recipe_id' => $recipe->id]);

@@ -20,7 +20,7 @@ class CreateCategoriesTest extends TestCase
         $this->get($this->createUrl)
              ->assertRedirect('/login');
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->get($this->createUrl)
              ->assertSee('Create a category');
     }
@@ -33,7 +33,7 @@ class CreateCategoriesTest extends TestCase
         $this->post($this->storeUrl, $category->toArray())
              ->assertRedirect('/login');
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->post($this->storeUrl, $category->toArray())
              ->assertRedirect('/');
     }
@@ -41,7 +41,7 @@ class CreateCategoriesTest extends TestCase
     /** @test */
     function a_user_can_create_a_category()
     {
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $category = factory(Category::class)->make();
 
         $this->post($this->storeUrl, $category->toArray())
@@ -58,7 +58,7 @@ class CreateCategoriesTest extends TestCase
     {
         $category = factory(Category::class)->make(['title' => null]);
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->post($this->storeUrl, $category->toArray())
              ->assertSessionHasErrors('title');
     }
@@ -68,7 +68,7 @@ class CreateCategoriesTest extends TestCase
     {
         $category = factory(Category::class)->make(['title' => Faker::sentence(100)]);
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->post($this->storeUr, $category->toArray())
              ->assertSessionHasErrors('title');
     }

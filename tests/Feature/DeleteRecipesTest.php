@@ -13,7 +13,7 @@ class DeleteRecipesTest extends TestCase
     /** @test */
     function a_user_can_delete_a_recipe()
     {
-        $this->be($user = factory(User::class)->create());
+        $this->signIn();
         $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
 
         $this->post("/recipe/{$recipe->id}/delete", $recipe->toArray())
@@ -28,7 +28,7 @@ class DeleteRecipesTest extends TestCase
     /** @test */
     function on_existent_recipe_can_be_deleted()
     {
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->post("/recipe/99999/delete", [])
              ->assertStatus(404);
     }
@@ -36,10 +36,11 @@ class DeleteRecipesTest extends TestCase
     /** @test */
     function only_the_owner_can_delete_a_recipe()
     {
-        $user = factory(User::class)->create();
+        $this->signIn();
+        $user = $this->user;
         $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->post("/recipe/{$recipe->id}/delete", $recipe->toArray())
              ->assertRedirect('/')
              ->assertSessionMissing('message');
@@ -52,10 +53,11 @@ class DeleteRecipesTest extends TestCase
     /** @test */
     function only_the_owner_can_see_the_delete_button_on_show_page()
     {
-        $user = factory(User::class)->create();
+        $this->signIn();
+        $user = $this->user;
         $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->get("/recipe/{$recipe->id}")
              ->assertDontSee('Delete');
 
@@ -67,10 +69,11 @@ class DeleteRecipesTest extends TestCase
     /** @test */
     function only_the_owner_can_see_the_delete_button_on_home_page()
     {
-        $user = factory(User::class)->create();
+        $this->signIn();
+        $user = $this->user;
         $recipe = factory(Recipe::class, 5)->create(['user_id' => $user->id]);
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->get("/")
              ->assertDontSee('Delete');
 

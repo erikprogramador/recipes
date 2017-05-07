@@ -21,7 +21,7 @@ class CreateRecipesTest extends TestCase
         $this->get('/recipe/create')
              ->assertRedirect('/login');
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->get('/recipe/create')
              ->assertSee('Create a recipe');
     }
@@ -34,7 +34,7 @@ class CreateRecipesTest extends TestCase
         $this->post('/recipe/store', $recipe)
              ->assertRedirect('/login');
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->post('/recipe/store', $recipe);
 
         $lastRecipe = Recipe::latest()->get()->first();
@@ -48,7 +48,7 @@ class CreateRecipesTest extends TestCase
     {
         $recipe = $this->makeRecipe(['title' => null], factory(Category::class, 3)->create());
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->post('/recipe/store', $recipe)
              ->assertSessionHasErrors(['title']);
     }
@@ -58,7 +58,7 @@ class CreateRecipesTest extends TestCase
     {
         $recipe = $this->makeRecipe(['description' => null], factory(Category::class, 3)->create());
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->post('/recipe/store', $recipe)
              ->assertSessionHasErrors(['description']);
     }
@@ -68,7 +68,7 @@ class CreateRecipesTest extends TestCase
     {
         $recipe = $this->makeRecipe(['cover' => null], factory(Category::class, 3)->create());
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->post('/recipe/store', $recipe)
              ->assertSessionHasErrors(['cover']);
     }
@@ -78,7 +78,7 @@ class CreateRecipesTest extends TestCase
     {
         $recipe = $this->makeRecipe(['featured' => true], factory(Category::class, 3)->create());
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->post('/recipe/store', $recipe);
 
         $first = Recipe::first();
@@ -91,7 +91,7 @@ class CreateRecipesTest extends TestCase
     {
         $recipe = $this->makeRecipe(['featured' => false], factory(Category::class, 3)->create());
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->post('/recipe/store', $recipe);
 
         $fistRecipe = Recipe::first();
@@ -105,7 +105,7 @@ class CreateRecipesTest extends TestCase
         $categories = factory(Category::class, 3)->create();
         $recipe = $this->makeRecipe([], $categories);
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->post('/recipe/store', $recipe)
              ->assertRedirect('/recipe/1');
 
@@ -123,7 +123,7 @@ class CreateRecipesTest extends TestCase
     {
         $recipe = factory(Recipe::class)->make();
 
-        $this->be(factory(User::class)->create());
+        $this->signIn();
         $this->post('/recipe/store', $recipe->toArray())
              ->assertSessionHasErrors('category_id');
     }
@@ -146,8 +146,8 @@ class CreateRecipesTest extends TestCase
     /** @test */
     function a_recipe_can_attach_many_ingredients()
     {
-        $this->be($user = factory(User::class)->create());
-        $recipe = $this->makeRecipe(['user_id' => $user->id], factory(Category::class)->create());
+        $this->signIn();
+        $recipe = $this->makeRecipe(['user_id' => $this->user->id], factory(Category::class)->create());
         $ingredients = factory(Ingredient::class, 3)->make();
         $recipe['ingredients'] = $ingredients->pluck('name');
         $recipe['quantity'] = $ingredients->pluck('quantity');
