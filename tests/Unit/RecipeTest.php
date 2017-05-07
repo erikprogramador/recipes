@@ -18,7 +18,7 @@ class RecipeTest extends TestCase
     /** @test */
     function it_can_be_featured()
     {
-        $recipe = factory(Recipe::class)->create();
+        $recipe = create(Recipe::class);
         $recipe->feature();
 
         $this->assertTrue($recipe->isFeatured());
@@ -27,7 +27,7 @@ class RecipeTest extends TestCase
     /** @test */
     function it_can_be_unfeatured()
     {
-        $recipe = factory(Recipe::class)->create(['featured' => true]);
+        $recipe = create(Recipe::class, ['featured' => true]);
         $recipe->unfeature();
 
         $this->assertFalse($recipe->isFeatured());
@@ -36,7 +36,7 @@ class RecipeTest extends TestCase
     /** @test */
     function if_is_or_not_checked()
     {
-        $recipe = factory(Recipe::class)->create(['featured' => true]);
+        $recipe = create(Recipe::class, ['featured' => true]);
 
         $this->assertEquals('checked', $recipe->checked());
     }
@@ -44,8 +44,8 @@ class RecipeTest extends TestCase
     /** @test */
     function it_has_a_owner()
     {
-        $user = factory(User::class)->create();
-        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $user = create(User::class);
+        $recipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->assertEquals($user->id, $recipe->owner->id);
     }
@@ -53,8 +53,8 @@ class RecipeTest extends TestCase
     /** @test */
     function it_has_many_categories()
     {
-        $recipe = factory(Recipe::class)->create();
-        $categories = factory(Category::class, 3)->create();
+        $recipe = create(Recipe::class);
+        $categories = createMany(Category::class, 3);
 
         $recipe->categories()->attach($categories);
         $newCategories = $recipe->categories;
@@ -67,9 +67,9 @@ class RecipeTest extends TestCase
     /** @test */
     function verify_if_a_user_is_owner()
     {
-        $user = factory(User::class)->create();
-        $notOwner = factory(User::class)->create();
-        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $user = create(User::class);
+        $notOwner = create(User::class);
+        $recipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->assertTrue($recipe->isOwner($user));
         $this->assertFalse($recipe->isOwner($notOwner));
@@ -78,8 +78,8 @@ class RecipeTest extends TestCase
     /** @test */
     function verify_if_the_logged_user_is_owner()
     {
-        $user = factory(User::class)->create();
-        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $user = create(User::class);
+        $recipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->assertFalse($recipe->isOwner());
 
@@ -93,9 +93,9 @@ class RecipeTest extends TestCase
     /** @test */
     function it_can_create_a_recipe_with_a_user_and_many_categories()
     {
-        $this->be(factory(User::class)->create());
-        $recipe = factory(Recipe::class)->make();
-        $categories = factory(Category::class, 3)->create();
+        $this->be(create(User::class));
+        $recipe = make(Recipe::class);
+        $categories = createMany(Category::class, 3);
 
         $createRecipe = new Recipe;
 
@@ -111,9 +111,9 @@ class RecipeTest extends TestCase
     /** @test */
     function it_should_return_if_a_category_is_associated_with()
     {
-        $categories = factory(Category::class, 3)->create();
-        $recipe = factory(Recipe::class)->create();
-        $noAssociate = factory(Category::class)->create();
+        $categories = create(Category::class, 3);
+        $recipe = create(Recipe::class);
+        $noAssociate = create(Category::class);
         $recipe->categories()->attach($categories);
 
         $this->assertEquals('selected', $recipe->categoryIsSelected($categories->first()));
@@ -123,8 +123,8 @@ class RecipeTest extends TestCase
     /** @test */
     function it_has_many_expedients()
     {
-        $recipe = factory(Recipe::class)->create();
-        $ingredients = factory(Ingredient::class, 3)->create(['recipe_id' => $recipe->id]);
+        $recipe = create(Recipe::class);
+        $ingredients = create(Ingredient::class, 3, ['recipe_id' => $recipe->id]);
 
         $this->assertEquals(3, $recipe->ingredients->count());
     }
@@ -132,8 +132,8 @@ class RecipeTest extends TestCase
     /** @test */
     function it_can_add_ingredients()
     {
-        $recipe = factory(Recipe::class)->create();
-        $ingredients = factory(Ingredient::class, 3)->make();
+        $recipe = create(Recipe::class);
+        $ingredients = makeMany(Ingredient::class, 3);
 
         $recipe->addIngredients($ingredients);
 

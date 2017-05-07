@@ -14,8 +14,8 @@ class UserTest extends TestCase
     /** @test */
     function it_has_many_recipes()
     {
-        $user = factory(User::class)->create();
-        $recipe = factory(Recipe::class)->make();
+        $user = create(User::class);
+        $recipe = make(Recipe::class);
         $user->recipes()->save($recipe);
 
         $this->assertEquals($recipe->title, $user->recipes->first()->title);
