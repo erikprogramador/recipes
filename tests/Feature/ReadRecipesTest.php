@@ -16,7 +16,7 @@ class ReadRecipesTest extends TestCase
     /** @test */
     function lists_all_recipes_on_home()
     {
-        $recipe = factory(Recipe::class)->create();
+        $recipe = create(Recipe::class);
         $this->get('/')
              ->assertSee($recipe->title);
     }
@@ -31,7 +31,7 @@ class ReadRecipesTest extends TestCase
     /** @test */
     function can_view_a_recipe()
     {
-        $recipe = factory(Recipe::class)->create();
+        $recipe = create(Recipe::class);
 
         $this->get('/recipe/'.$recipe->id)
              ->assertSee($recipe->title)
@@ -42,8 +42,8 @@ class ReadRecipesTest extends TestCase
     function a_user_can_see_there_recipes()
     {
         $this->signIn();
-        $userRecipe = factory(Recipe::class)->create(['user_id' => $this->user->id]);
-        $notUserRecipe = factory(Recipe::class)->create(['title' => 'XPTO Recipe']);
+        $userRecipe = create(Recipe::class, ['user_id' => $this->user->id]);
+        $notUserRecipe = create(Recipe::class, ['title' => 'XPTO Recipe']);
 
         $this->get("/user/{$this->user->id}/recipes")
              ->assertSee($userRecipe->title)

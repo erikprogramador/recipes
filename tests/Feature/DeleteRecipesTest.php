@@ -15,7 +15,7 @@ class DeleteRecipesTest extends TestCase
     {
         $this->signIn();
         $user = $this->user;
-        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $recipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->post("/recipe/{$recipe->id}/delete", $recipe->toArray())
              ->assertRedirect('/')
@@ -39,7 +39,7 @@ class DeleteRecipesTest extends TestCase
     {
         $this->signIn();
         $user = $this->user;
-        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $recipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->signIn();
         $this->post("/recipe/{$recipe->id}/delete", $recipe->toArray())
@@ -56,7 +56,7 @@ class DeleteRecipesTest extends TestCase
     {
         $this->signIn();
         $user = $this->user;
-        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $recipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->signIn();
         $this->get("/recipe/{$recipe->id}")
@@ -72,7 +72,7 @@ class DeleteRecipesTest extends TestCase
     {
         $this->signIn();
         $user = $this->user;
-        $recipe = factory(Recipe::class, 5)->create(['user_id' => $user->id]);
+        $recipe = createMany(Recipe::class, 5, ['user_id' => $user->id]);
 
         $this->signIn();
         $this->get("/")

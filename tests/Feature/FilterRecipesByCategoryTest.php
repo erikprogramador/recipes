@@ -13,11 +13,11 @@ class FilterRecipesByCategoryTest extends TestCase
     /** @test */
     function only_recipes_associate_with_a_given_category_must_shows_when_category_is_search()
     {
-        $categories = factory(Category::class)->create();
-        $recipe = factory(Recipe::class)->create();
+        $categories = create(Category::class);
+        $recipe = create(Recipe::class);
         $recipe->categories()->attach($categories);
-        $noShow = factory(Recipe::class)->create(['title' => 'ERIK XPTO']);
-        $noCategory = factory(Category::class)->create(['title' => 'Chocolate cacke', 'slug' => 'chocolate-cacke']);
+        $noShow = create(Recipe::class, ['title' => 'ERIK XPTO']);
+        $noCategory = create(Category::class, ['title' => 'Chocolate cacke', 'slug' => 'chocolate-cacke']);
         $noShow->categories()->attach($noCategory);
 
         $this->get('/recipe/category/'. $categories->slug)

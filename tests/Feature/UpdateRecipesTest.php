@@ -20,7 +20,7 @@ class UpdateRecipesTest extends TestCase
     {
         $this->signIn();
         $user = $this->user;
-        $accessRecipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $accessRecipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->signIn();
         $this->get("/recipe/{$accessRecipe->id}")
@@ -36,7 +36,7 @@ class UpdateRecipesTest extends TestCase
     {
         $this->signIn();
         $user = $this->user;
-        $accessRecipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $accessRecipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->signIn();
         $this->get("/")
@@ -50,8 +50,8 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function only_owner_user_can_update_the_recipe()
     {
-        $user = factory(User::class)->create();
-        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $user = create(User::class);
+        $recipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->signIn();
         $this->get("/recipe/{$recipe->id}/update")
@@ -68,8 +68,8 @@ class UpdateRecipesTest extends TestCase
     {
         $this->signIn();
         $user = $this->user;
-        $oldRecipe = factory(Recipe::class)->create(['user_id' => $user->id]);
-        $newRecipe = $this->makeRecipe(['user_id' => $user->id], factory(Category::class, 3)->create());
+        $oldRecipe = create(Recipe::class, ['user_id' => $user->id]);
+        $newRecipe = $this->makeRecipe(['user_id' => $user->id], createMany(Category::class, 3));
 
         $this->post("/recipe/{$oldRecipe->id}/update", $newRecipe);
 
@@ -82,10 +82,10 @@ class UpdateRecipesTest extends TestCase
     /** @test */
     function only_the_owner_user_can_update_a_recipe()
     {
-        $user = factory(User::class)->create();
-        $loggedUser = factory(User::class)->create();
-        $oldRecipe = factory(Recipe::class)->create(['user_id' => $user->id]);
-        $newRecipe = $this->makeRecipe(['user_id' => $user->id], factory(Category::class, 3)->create());
+        $user = create(User::class);
+        $loggedUser = create(User::class);
+        $oldRecipe = create(Recipe::class, ['user_id' => $user->id]);
+        $newRecipe = $this->makeRecipe(['user_id' => $user->id], createMany(Category::class, 3));
 
         $this->be($loggedUser);
         $this->post("/recipe/{$oldRecipe->id}/update", $newRecipe)
@@ -101,8 +101,8 @@ class UpdateRecipesTest extends TestCase
     {
         $this->signIn();
         $user = $this->user;
-        $oldRecipe = factory(Recipe::class)->create(['user_id' => $user->id]);
-        $newRecipe = $this->makeRecipe(['user_id' => $user->id], factory(Category::class, 3)->create());
+        $oldRecipe = create(Recipe::class, ['user_id' => $user->id]);
+        $newRecipe = $this->makeRecipe(['user_id' => $user->id], createMany(Category::class, 3));
 
         $this->post("/recipe/{$oldRecipe->id}/update", $newRecipe)
              ->assertRedirect('/recipe/' . $oldRecipe->id);
@@ -113,8 +113,8 @@ class UpdateRecipesTest extends TestCase
     {
         $this->signIn();
         $user = $this->user;
-        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
-        $newRecipe = factory(Recipe::class)->make(['title' => null, 'user_id' => $user->id]);
+        $recipe = create(Recipe::class, ['user_id' => $user->id]);
+        $newRecipe = make(Recipe::class, ['title' => null, 'user_id' => $user->id]);
 
         $this->post("/recipe/{$recipe->id}/update", $newRecipe->toArray())
              ->assertSessionHasErrors(['title']);
@@ -125,8 +125,8 @@ class UpdateRecipesTest extends TestCase
     {
         $this->signIn();
         $user = $this->user;
-        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
-        $newRecipe = factory(Recipe::class)->make(['description' => null, 'user_id' => $user->id]);
+        $recipe = create(Recipe::class, ['user_id' => $user->id]);
+        $newRecipe = make(Recipe::class, ['description' => null, 'user_id' => $user->id]);
 
         $this->post("/recipe/{$recipe->id}/update", $newRecipe->toArray())
              ->assertSessionHasErrors(['description']);
@@ -137,8 +137,8 @@ class UpdateRecipesTest extends TestCase
     {
         $this->signIn();
         $user = $this->user;
-        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
-        $newRecipe = factory(Recipe::class)->make(['cover' => null, 'user_id' => $user->id]);
+        $recipe = create(Recipe::class, ['user_id' => $user->id]);
+        $newRecipe = make(Recipe::class, ['cover' => null, 'user_id' => $user->id]);
 
         $this->post("/recipe/{$recipe->id}/update", $newRecipe->toArray())
              ->assertSessionHasErrors(['cover']);
@@ -149,8 +149,8 @@ class UpdateRecipesTest extends TestCase
     {
         $this->signIn();
         $user = $this->user;
-        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
-        $newRecipe = factory(Recipe::class)->make(['user_id' => $user->id]);
+        $recipe = create(Recipe::class, ['user_id' => $user->id]);
+        $newRecipe = make(Recipe::class, ['user_id' => $user->id]);
 
         $this->post("/recipe/{$recipe->id}/update", $newRecipe->toArray())
              ->assertSessionHasErrors(['category_id']);
@@ -161,8 +161,8 @@ class UpdateRecipesTest extends TestCase
     {
         $this->signIn();
         $user = $this->user;
-        $recipe = $this->createRecipe(['user_id' => $user->id], factory(Category::class, 3)->create());
-        $newRecipe = $this->makeRecipe(['user_id' => $user->id], factory(Category::class, 3)->create());
+        $recipe = $this->createRecipe(['user_id' => $user->id], createMany(Category::class, 3));
+        $newRecipe = $this->makeRecipe(['user_id' => $user->id], createMany(Category::class, 3));
 
         $this->post("/recipe/{$recipe->id}/update", $newRecipe)
              ->assertRedirect("/recipe/{$recipe->id}");
@@ -177,11 +177,11 @@ class UpdateRecipesTest extends TestCase
     {
         $this->signIn();
         $user = $this->user;
-        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
-        $categories = factory(Category::class)->create();
-        $ingredients = factory(Ingredient::class, 3)->create(['recipe_id' => $recipe->id]);
+        $recipe = create(Recipe::class, ['user_id' => $user->id]);
+        $categories = create(Category::class);
+        $ingredients = createMany(Ingredient::class, 3, ['recipe_id' => $recipe->id]);
         $recipe->categories()->attach($categories);
-        $newIngredients = factory(Ingredient::class, 2)->make();
+        $newIngredients = makeMany(Ingredient::class, 2);
 
         $update = [
             'title' => $recipe->title,
@@ -202,7 +202,7 @@ class UpdateRecipesTest extends TestCase
 
     protected function makeRecipe($overrides = [], $categories)
     {
-        $recipe = factory(Recipe::class)->make($overrides);
+        $recipe = make(Recipe::class, $overrides);
 
         $post = [
             'title' => $recipe->title,
@@ -217,7 +217,7 @@ class UpdateRecipesTest extends TestCase
 
     protected function createRecipe($overrides = [], $categories)
     {
-        $recipe = factory(Recipe::class)->create($overrides);
+        $recipe = create(Recipe::class, $overrides);
         $recipe->categories()->attach($categories);
 
         return $recipe;
