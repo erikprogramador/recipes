@@ -171,4 +171,11 @@ class Recipe extends Model
     {
         return $user->id === $this->owner->id;
     }
+
+    public function byCategory($category)
+    {
+        return $this->whereHas('categories', function ($query) use ($category) {
+            $query->where('category_id', $category->id);
+        })->get();
+    }
 }

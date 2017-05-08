@@ -52,9 +52,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $recipes = $this->recipe->whereHas('categories', function ($query) use ($category) {
-            $query->where('category_id', $category->id);
-        })->get();
+        $recipes = $this->recipe->byCategory($category);
 
         return view('welcome', compact('recipes'));
     }
