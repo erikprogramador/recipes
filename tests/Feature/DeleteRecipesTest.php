@@ -68,7 +68,7 @@ class DeleteRecipesTest extends TestCase
     function only_the_owner_can_see_the_delete_button_on_home_page()
     {
         $user = $this->signIn();
-        $recipe = createMany(Recipe::class, 5, ['user_id' => $user->id]);
+        $recipe = create(Recipe::class, ['user_id' => $user->id]);
 
         $this->signIn();
         $this->get("/")

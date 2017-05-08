@@ -29,7 +29,7 @@ class CreateRecipesTest extends TestCase
     /** @test */
     function only_logged_users_can_store_a_recipe()
     {
-        $recipe = $this->makeRecipe([], createMany(Category::class, 3));
+        $recipe = $this->makeRecipe([], create(Category::class));
 
         $this->post('/recipe/store', $recipe)
              ->assertRedirect('/login');
@@ -46,7 +46,7 @@ class CreateRecipesTest extends TestCase
     /** @test */
     function title_field_is_required()
     {
-        $recipe = $this->makeRecipe(['title' => null], createMany(Category::class, 3));
+        $recipe = $this->makeRecipe(['title' => null], create(Category::class));
 
         $this->signIn();
         $this->post('/recipe/store', $recipe)
@@ -56,7 +56,7 @@ class CreateRecipesTest extends TestCase
     /** @test */
     function description_field_is_required()
     {
-        $recipe = $this->makeRecipe(['description' => null], createMany(Category::class, 3));
+        $recipe = $this->makeRecipe(['description' => null], create(Category::class));
 
         $this->signIn();
         $this->post('/recipe/store', $recipe)
@@ -66,7 +66,7 @@ class CreateRecipesTest extends TestCase
     /** @test */
     function cover_field_is_required()
     {
-        $recipe = $this->makeRecipe(['cover' => null], createMany(Category::class, 3));
+        $recipe = $this->makeRecipe(['cover' => null], create(Category::class));
 
         $this->signIn();
         $this->post('/recipe/store', $recipe)
@@ -76,7 +76,7 @@ class CreateRecipesTest extends TestCase
     /** @test */
     function a_recipe_can_be_featured()
     {
-        $recipe = $this->makeRecipe(['featured' => true], createMany(Category::class, 3));
+        $recipe = $this->makeRecipe(['featured' => true], create(Category::class));
 
         $this->signIn();
         $this->post('/recipe/store', $recipe);
@@ -89,7 +89,7 @@ class CreateRecipesTest extends TestCase
     /** @test */
     function a_recipe_without_have_be_featured_can_not_be_featured()
     {
-        $recipe = $this->makeRecipe(['featured' => false], createMany(Category::class, 3));
+        $recipe = $this->makeRecipe(['featured' => false], create(Category::class));
 
         $this->signIn();
         $this->post('/recipe/store', $recipe);
@@ -102,7 +102,7 @@ class CreateRecipesTest extends TestCase
     /** @test */
     function a_recipe_can_have_many_categories()
     {
-        $categories = createMany(Category::class, 3);
+        $categories = createMany(Category::class, 2);
         $recipe = $this->makeRecipe([], $categories);
 
         $this->signIn();
@@ -113,12 +113,12 @@ class CreateRecipesTest extends TestCase
 
         $newCategories = $find->categories;
 
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $this->assertEquals($newCategories[$i]->title, $categories[$i]->title);
         }
     }
 
-        /** @test */
+    /** @test */
     function a_recipe_must_have_a_category()
     {
         $recipe = make(Recipe::class);
@@ -133,7 +133,7 @@ class CreateRecipesTest extends TestCase
     {
         $user = $this->signIn();
         $recipe = $this->makeRecipe(['user_id' => $user->id], create(Category::class));
-        $ingredients = makeMany(Ingredient::class, 3);
+        $ingredients = makeMany(Ingredient::class, 2);
         $recipe['ingredients'] = $ingredients->pluck('name');
         $recipe['quantity'] = $ingredients->pluck('quantity');
 
@@ -142,7 +142,7 @@ class CreateRecipesTest extends TestCase
 
         $find = Recipe::find(4);
 
-        $this->assertEquals(3, $find->ingredients->count());
+        $this->assertEquals(2, $find->ingredients->count());
     }
 
     protected function makeRecipe($overrides = [], $categories)

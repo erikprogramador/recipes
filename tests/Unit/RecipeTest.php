@@ -36,7 +36,7 @@ class RecipeTest extends TestCase
     /** @test */
     function if_is_or_not_checked()
     {
-        $recipe = create(Recipe::class, ['featured' => true]);
+        $recipe = make(Recipe::class, ['featured' => true]);
 
         $this->assertEquals('checked', $recipe->checked());
     }
@@ -54,12 +54,12 @@ class RecipeTest extends TestCase
     function it_has_many_categories()
     {
         $recipe = create(Recipe::class);
-        $categories = createMany(Category::class, 3);
+        $categories = createMany(Category::class, 2);
 
         $recipe->categories()->attach($categories);
         $newCategories = $recipe->categories;
 
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $this->assertEquals($newCategories[$i]->title, $categories[$i]->title);
         }
     }
@@ -95,7 +95,7 @@ class RecipeTest extends TestCase
     {
         $this->signIn();
         $recipe = make(Recipe::class);
-        $categories = createMany(Category::class, 3);
+        $categories = createMany(Category::class, 2);
 
         $createRecipe = new Recipe;
 
@@ -103,7 +103,7 @@ class RecipeTest extends TestCase
 
         $newCategories = $createRecipe->categories;
 
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $this->assertEquals($newCategories[$i]->title, $categories[$i]->title);
         }
     }
@@ -111,7 +111,7 @@ class RecipeTest extends TestCase
     /** @test */
     function it_should_return_if_a_category_is_associated_with()
     {
-        $categories = createMany(Category::class, 3);
+        $categories = createMany(Category::class, 2);
         $recipe = create(Recipe::class);
         $noAssociate = create(Category::class);
         $recipe->categories()->attach($categories);
@@ -124,19 +124,19 @@ class RecipeTest extends TestCase
     function it_has_many_ingredients()
     {
         $recipe = create(Recipe::class);
-        $ingredients = createMany(Ingredient::class, 3, ['recipe_id' => $recipe->id]);
+        $ingredients = createMany(Ingredient::class, 2, ['recipe_id' => $recipe->id]);
 
-        $this->assertEquals(3, $recipe->ingredients->count());
+        $this->assertEquals(2, $recipe->ingredients->count());
     }
 
     /** @test */
     function it_can_add_ingredients()
     {
         $recipe = create(Recipe::class);
-        $ingredients = makeMany(Ingredient::class, 3);
+        $ingredients = makeMany(Ingredient::class, 2);
 
         $recipe->addIngredients($ingredients);
 
-        $this->assertCount(3, $recipe->ingredients);
+        $this->assertCount(2, $recipe->ingredients);
     }
 }

@@ -66,7 +66,7 @@ class UpdateRecipesTest extends TestCase
     {
         $user = $this->signIn();
         $oldRecipe = create(Recipe::class, ['user_id' => $user->id]);
-        $newRecipe = $this->makeRecipe(['user_id' => $user->id], createMany(Category::class, 3));
+        $newRecipe = $this->makeRecipe(['user_id' => $user->id], create(Category::class));
 
         $this->post("/recipe/{$oldRecipe->id}/update", $newRecipe);
 
@@ -82,7 +82,7 @@ class UpdateRecipesTest extends TestCase
         $user = create(User::class);
         $loggedUser = create(User::class);
         $oldRecipe = create(Recipe::class, ['user_id' => $user->id]);
-        $newRecipe = $this->makeRecipe(['user_id' => $user->id], createMany(Category::class, 3));
+        $newRecipe = $this->makeRecipe(['user_id' => $user->id], create(Category::class));
 
         $this->signIn($loggedUser);
         $this->post("/recipe/{$oldRecipe->id}/update", $newRecipe)
@@ -98,7 +98,7 @@ class UpdateRecipesTest extends TestCase
     {
         $user = $this->signIn();
         $oldRecipe = create(Recipe::class, ['user_id' => $user->id]);
-        $newRecipe = $this->makeRecipe(['user_id' => $user->id], createMany(Category::class, 3));
+        $newRecipe = $this->makeRecipe(['user_id' => $user->id], create(Category::class));
 
         $this->post("/recipe/{$oldRecipe->id}/update", $newRecipe)
              ->assertRedirect('/recipe/' . $oldRecipe->id);
@@ -152,8 +152,8 @@ class UpdateRecipesTest extends TestCase
     function a_recipe_can_recive_categories_update()
     {
         $user = $this->signIn();
-        $recipe = $this->createRecipe(['user_id' => $user->id], createMany(Category::class, 3));
-        $newRecipe = $this->makeRecipe(['user_id' => $user->id], createMany(Category::class, 3));
+        $recipe = $this->createRecipe(['user_id' => $user->id], create(Category::class));
+        $newRecipe = $this->makeRecipe(['user_id' => $user->id], create(Category::class));
 
         $this->post("/recipe/{$recipe->id}/update", $newRecipe)
              ->assertRedirect("/recipe/{$recipe->id}");
