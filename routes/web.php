@@ -4,8 +4,6 @@ Route::get('/', 'RecipeController@index');
 
 Auth::routes();
 
-Route::get('home', 'HomeController@index');
-
 /*
  * User
  */
