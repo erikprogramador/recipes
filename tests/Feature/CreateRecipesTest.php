@@ -133,7 +133,7 @@ class CreateRecipesTest extends TestCase
     {
         $user = $this->signIn();
         $recipe = $this->makeRecipe(['user_id' => $user->id], create(Category::class));
-        $ingredients = makeMany(Ingredient::class, 2);
+        $ingredients = makeMany(Ingredient::class, 3);
         $recipe['ingredients'] = $ingredients->pluck('name');
         $recipe['quantity'] = $ingredients->pluck('quantity');
 
@@ -142,7 +142,7 @@ class CreateRecipesTest extends TestCase
 
         $find = Recipe::find(4);
 
-        $this->assertEquals(2, $find->ingredients->count());
+        $this->assertEquals(3, $find->ingredients->count());
     }
 
     protected function makeRecipe($overrides = [], $categories)
