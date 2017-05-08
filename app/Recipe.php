@@ -149,6 +149,19 @@ class Recipe extends Model
     }
 
     /**
+     * Get the recipe by category
+     *
+     * @param Category $category
+     * @return self
+     */
+    public function byCategory(Category $category)
+    {
+        return $this->whereHas('categories', function ($query) use ($category) {
+            $query->where('category_id', $category->id);
+        })->get();
+    }
+
+    /**
      * Feature or unfeature it
      *
      * @param  bool
@@ -170,12 +183,5 @@ class Recipe extends Model
     protected function isOwnerByUserId(User $user) : bool
     {
         return $user->id === $this->owner->id;
-    }
-
-    public function byCategory($category)
-    {
-        return $this->whereHas('categories', function ($query) use ($category) {
-            $query->where('category_id', $category->id);
-        })->get();
     }
 }
